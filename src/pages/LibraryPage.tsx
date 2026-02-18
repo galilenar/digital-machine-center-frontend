@@ -300,24 +300,7 @@ export default function LibraryPage() {
       )}
 
       {/* ==================== CONTENT ==================== */}
-      <Box sx={{
-        flex: 1,
-        overflow: 'auto',
-        position: 'relative',
-        '&::-webkit-scrollbar': { width: 8 },
-        '&::-webkit-scrollbar-track': { background: 'transparent' },
-        '&::-webkit-scrollbar-thumb': {
-          background: 'rgba(255,255,255,0.15)',
-          borderRadius: 4,
-          transition: 'background 0.3s',
-        },
-        '&:hover::-webkit-scrollbar-thumb': {
-          background: 'rgba(255,255,255,0.35)',
-        },
-        '&::-webkit-scrollbar-thumb:hover': {
-          background: 'rgba(255,255,255,0.5)',
-        },
-      }}>
+      <Box sx={{ flex: 1, overflow: 'auto', position: 'relative' }}>
         <Typography
           sx={{
             fontWeight: 600,
