@@ -511,12 +511,15 @@ function ProjectCard({ product, onClick }: { product: Product; onClick: () => vo
         width: 195,
         borderRadius: 1.5,
         bgcolor: '#1E2230',
-        border: '1px solid rgba(255,255,255,0.06)',
+        border: '2px solid transparent',
         overflow: 'hidden',
         cursor: 'pointer',
         flexShrink: 0,
-        transition: 'border-color 0.15s',
-        '&:hover': { borderColor: 'rgba(255,255,255,0.18)' },
+        transition: 'border-color 0.2s, box-shadow 0.2s',
+        '&:hover': {
+          borderColor: '#00BCD4',
+          boxShadow: '0 0 12px rgba(0,188,212,0.25)',
+        },
       }}
     >
       {/* Image area */}
