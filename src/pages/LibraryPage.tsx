@@ -600,30 +600,6 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
         </Typography>
       </Box>
 
-      {/* License button */}
-      {product.trialDays > 0 && (
-        <Box sx={{ px: 1, pb: 0.8 }}>
-          <Box
-            sx={{
-              background: 'linear-gradient(135deg, #00CB9A, #1269D9)',
-              borderRadius: '6px',
-              py: 0.5,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: 0.5,
-              cursor: 'pointer',
-              transition: 'opacity 0.15s',
-              '&:hover': { opacity: 0.85 },
-            }}
-          >
-            <TrialIcon sx={{ fontSize: 13, color: '#fff' }} />
-            <Typography sx={{ fontSize: '0.62rem', fontWeight: 600, color: '#fff' }}>
-              Get Trial License
-            </Typography>
-          </Box>
-        </Box>
-      )}
     </Box>
   );
 }
@@ -785,7 +761,7 @@ function DetailPanel({
 
       {/* ACTIONS */}
       <Box sx={{ mt: 1.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
-        {isAuthenticated && product.trialDays > 0 && (
+        {product.trialDays > 0 && (
           <Button
             fullWidth
             variant="contained"
