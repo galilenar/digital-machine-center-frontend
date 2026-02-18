@@ -74,7 +74,7 @@ export default function AdminPage() {
       const data = await productsApi.getAll();
       setProducts(data);
     } catch {
-      setSnackbar({ open: true, message: 'Ошибка загрузки продуктов', severity: 'error' });
+      setSnackbar({ open: true, message: 'Failed to load products', severity: 'error' });
     } finally {
       setLoading(false);
     }
@@ -106,7 +106,7 @@ export default function AdminPage() {
       await productsApi.updateStatus(product.id, PublicationStatus.PUBLISHED);
       setSnackbar({
         open: true,
-        message: `"${product.name}" опубликован и виден клиентам`,
+        message: `"${product.name}" published and visible to customers`,
         severity: 'success',
       });
       fetchAll();
@@ -114,7 +114,7 @@ export default function AdminPage() {
         setSelectedProduct({ ...product, publicationStatus: PublicationStatus.PUBLISHED });
       }
     } catch {
-      setSnackbar({ open: true, message: 'Ошибка одобрения', severity: 'error' });
+      setSnackbar({ open: true, message: 'Failed to approve', severity: 'error' });
     }
   };
 
@@ -123,7 +123,7 @@ export default function AdminPage() {
       await productsApi.updateStatus(product.id, PublicationStatus.REJECTED);
       setSnackbar({
         open: true,
-        message: `"${product.name}" отклонён`,
+        message: `"${product.name}" rejected`,
         severity: 'success',
       });
       fetchAll();
@@ -131,7 +131,7 @@ export default function AdminPage() {
         setSelectedProduct({ ...product, publicationStatus: PublicationStatus.REJECTED });
       }
     } catch {
-      setSnackbar({ open: true, message: 'Ошибка отклонения', severity: 'error' });
+      setSnackbar({ open: true, message: 'Failed to reject', severity: 'error' });
     }
   };
 
@@ -140,7 +140,7 @@ export default function AdminPage() {
       await productsApi.updateStatus(product.id, PublicationStatus.DRAFT);
       setSnackbar({
         open: true,
-        message: `"${product.name}" скрыт из публичного доступа`,
+        message: `"${product.name}" hidden from public`,
         severity: 'success',
       });
       fetchAll();
@@ -148,7 +148,7 @@ export default function AdminPage() {
         setSelectedProduct({ ...product, publicationStatus: PublicationStatus.DRAFT });
       }
     } catch {
-      setSnackbar({ open: true, message: 'Ошибка скрытия', severity: 'error' });
+      setSnackbar({ open: true, message: 'Failed to hide', severity: 'error' });
     }
   };
 
@@ -156,14 +156,14 @@ export default function AdminPage() {
     if (!deleteDialog.product) return;
     try {
       await productsApi.delete(deleteDialog.product.id);
-      setSnackbar({ open: true, message: 'Продукт удалён', severity: 'success' });
+      setSnackbar({ open: true, message: 'Product deleted', severity: 'success' });
       setDeleteDialog({ open: false, product: null });
       if (selectedProduct?.id === deleteDialog.product.id) {
         setSelectedProduct(null);
       }
       fetchAll();
     } catch {
-      setSnackbar({ open: true, message: 'Ошибка удаления', severity: 'error' });
+      setSnackbar({ open: true, message: 'Failed to delete', severity: 'error' });
     }
   };
 
@@ -202,10 +202,10 @@ export default function AdminPage() {
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
           <Box>
             <Typography variant="h5" fontWeight={700}>
-              Модерация контента
+              Content Moderation
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 0.3 }}>
-              Одобрение и управление продуктами
+              Review and manage products
             </Typography>
           </Box>
           <Button
@@ -215,7 +215,7 @@ export default function AdminPage() {
             onClick={fetchAll}
             sx={{ borderColor: 'rgba(255,255,255,0.12)', color: 'rgba(245,245,245,0.6)' }}
           >
-            Обновить
+            Refresh
           </Button>
         </Box>
 
@@ -233,7 +233,7 @@ export default function AdminPage() {
           <Tab
             label={
               <Badge badgeContent={statusCounts.ALL} color="primary" max={999}>
-                <Box sx={{ pr: 2 }}>Все</Box>
+                <Box sx={{ pr: 2 }}>All</Box>
               </Badge>
             }
             value="ALL"
@@ -241,7 +241,7 @@ export default function AdminPage() {
           <Tab
             label={
               <Badge badgeContent={statusCounts[PublicationStatus.PENDING_REVIEW]} color="warning" max={999}>
-                <Box sx={{ pr: 2 }}>На модерации</Box>
+                <Box sx={{ pr: 2 }}>Pending</Box>
               </Badge>
             }
             value={PublicationStatus.PENDING_REVIEW}
@@ -249,19 +249,19 @@ export default function AdminPage() {
           <Tab
             label={
               <Badge badgeContent={statusCounts[PublicationStatus.PUBLISHED]} color="success" max={999}>
-                <Box sx={{ pr: 2 }}>Опубликовано</Box>
+                <Box sx={{ pr: 2 }}>Published</Box>
               </Badge>
             }
             value={PublicationStatus.PUBLISHED}
           />
-          <Tab label="Черновики" value={PublicationStatus.DRAFT} />
-          <Tab label="Отклонено" value={PublicationStatus.REJECTED} />
+          <Tab label="Drafts" value={PublicationStatus.DRAFT} />
+          <Tab label="Rejected" value={PublicationStatus.REJECTED} />
         </Tabs>
 
         {/* Search */}
         <TextField
           fullWidth
-          placeholder="Поиск продуктов..."
+          placeholder="Search products..."
           size="small"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -304,19 +304,19 @@ export default function AdminPage() {
                     },
                   }}
                 >
-                  <TableCell>Продукт</TableCell>
-                  <TableCell>Тип</TableCell>
-                  <TableCell>Владелец</TableCell>
-                  <TableCell>Статус</TableCell>
-                  <TableCell>Дата</TableCell>
-                  <TableCell align="center">Действия</TableCell>
+                  <TableCell>Product</TableCell>
+                  <TableCell>Type</TableCell>
+                  <TableCell>Owner</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Date</TableCell>
+                  <TableCell align="center">Actions</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
                 {filteredProducts.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={6} align="center" sx={{ py: 6 }}>
-                      <Typography color="text.secondary">Продукты не найдены</Typography>
+                      <Typography color="text.secondary">No products found</Typography>
                     </TableCell>
                   </TableRow>
                 ) : (
@@ -395,7 +395,7 @@ export default function AdminPage() {
                       <TableCell align="center" onClick={(e) => e.stopPropagation()}>
                         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 0.3 }}>
                           {product.publicationStatus !== PublicationStatus.PUBLISHED && (
-                            <Tooltip title="Одобрить (опубликовать)">
+                            <Tooltip title="Approve (publish)">
                               <IconButton
                                 size="small"
                                 sx={{ color: '#4caf50' }}
@@ -406,7 +406,7 @@ export default function AdminPage() {
                             </Tooltip>
                           )}
                           {product.publicationStatus === PublicationStatus.PUBLISHED && (
-                            <Tooltip title="Скрыть из публикации">
+                            <Tooltip title="Unpublish">
                               <IconButton
                                 size="small"
                                 sx={{ color: '#ff9800' }}
@@ -417,7 +417,7 @@ export default function AdminPage() {
                             </Tooltip>
                           )}
                           {product.publicationStatus !== PublicationStatus.REJECTED && (
-                            <Tooltip title="Отклонить">
+                            <Tooltip title="Reject">
                               <IconButton
                                 size="small"
                                 sx={{ color: '#f44336' }}
@@ -427,7 +427,7 @@ export default function AdminPage() {
                               </IconButton>
                             </Tooltip>
                           )}
-                          <Tooltip title="Удалить">
+                          <Tooltip title="Delete">
                             <IconButton
                               size="small"
                               sx={{ color: 'rgba(245,245,245,0.35)' }}
@@ -472,7 +472,7 @@ export default function AdminPage() {
             }}
           >
             <Typography sx={{ fontWeight: 600, fontSize: '0.85rem' }}>
-              Детали продукта
+              Product Details
             </Typography>
             <IconButton size="small" onClick={() => setSelectedProduct(null)}>
               <CloseIcon fontSize="small" />
@@ -505,7 +505,7 @@ export default function AdminPage() {
                     '&:hover': { bgcolor: '#388e3c' },
                   }}
                 >
-                  Одобрить
+                  Approve
                 </Button>
               )}
               {selectedProduct.publicationStatus === PublicationStatus.PUBLISHED && (
@@ -521,67 +521,67 @@ export default function AdminPage() {
                     py: 0.3,
                   }}
                 >
-                  Скрыть
+                  Unpublish
                 </Button>
               )}
             </Box>
 
             <Divider sx={{ mb: 2 }} />
 
-            <DetailField label="Название" value={selectedProduct.name} />
+            <DetailField label="Name" value={selectedProduct.name} />
             <DetailField
-              label="Тип контента"
+              label="Content Type"
               value={contentTypeLabels[selectedProduct.contentType]}
             />
             <DetailField
-              label="Тип станка"
+              label="Machine Type"
               value={machineTypeLabels[selectedProduct.machineType]}
             />
             <DetailField
-              label="Производитель станка"
+              label="Machine Manufacturer"
               value={selectedProduct.machineManufacturer}
             />
-            <DetailField label="Модель станка" value={selectedProduct.machineModel} />
-            <DetailField label="Серия станка" value={selectedProduct.machineSeries} />
-            <DetailField label="Количество осей" value={selectedProduct.numberOfAxes} />
+            <DetailField label="Machine Model" value={selectedProduct.machineModel} />
+            <DetailField label="Machine Series" value={selectedProduct.machineSeries} />
+            <DetailField label="Number of Axes" value={selectedProduct.numberOfAxes} />
 
             <Divider sx={{ my: 1.5 }} />
 
             <DetailField
-              label="Производитель ЧПУ"
+              label="Controller Manufacturer"
               value={selectedProduct.controllerManufacturer}
             />
-            <DetailField label="Серия ЧПУ" value={selectedProduct.controllerSeries} />
-            <DetailField label="Модель ЧПУ" value={selectedProduct.controllerModel} />
+            <DetailField label="Controller Series" value={selectedProduct.controllerSeries} />
+            <DetailField label="Controller Model" value={selectedProduct.controllerModel} />
             <DetailField
-              label="Мин. версия ПО"
+              label="Min Software Version"
               value={selectedProduct.minSoftwareVersion}
             />
 
             <Divider sx={{ my: 1.5 }} />
 
             <DetailField
-              label="Цена"
+              label="Price"
               value={
                 selectedProduct.priceEur > 0
                   ? `€${selectedProduct.priceEur}`
-                  : 'Бесплатно'
+                  : 'Free'
               }
             />
-            <DetailField label="Пробный период" value={`${selectedProduct.trialDays} дней`} />
-            <DetailField label="Владелец" value={selectedProduct.productOwner} />
-            <DetailField label="Автор" value={selectedProduct.authorName} />
+            <DetailField label="Trial Period" value={`${selectedProduct.trialDays} days`} />
+            <DetailField label="Owner" value={selectedProduct.productOwner} />
+            <DetailField label="Author" value={selectedProduct.authorName} />
             <DetailField
-              label="Проверка"
+              label="Verification"
               value={
                 selectedProduct.experienceStatus === ExperienceStatus.VERIFIED_ON_EQUIPMENT
-                  ? 'Проверено на оборудовании'
-                  : 'Не проверено'
+                  ? 'Verified on Equipment'
+                  : 'Not Tested'
               }
             />
-            <DetailField label="Загрузки" value={selectedProduct.downloadCount} />
+            <DetailField label="Downloads" value={selectedProduct.downloadCount} />
             <DetailField
-              label="Создано"
+              label="Created"
               value={
                 selectedProduct.createdAt
                   ? new Date(selectedProduct.createdAt).toLocaleString()
@@ -589,7 +589,7 @@ export default function AdminPage() {
               }
             />
             <DetailField
-              label="Обновлено"
+              label="Updated"
               value={
                 selectedProduct.updatedAt
                   ? new Date(selectedProduct.updatedAt).toLocaleString()
@@ -609,7 +609,7 @@ export default function AdminPage() {
                     mb: 0.5,
                   }}
                 >
-                  Описание
+                  Description
                 </Typography>
                 <Typography sx={{ fontSize: '0.78rem', color: 'rgba(245,245,245,0.7)', lineHeight: 1.5 }}>
                   {selectedProduct.description}
@@ -627,19 +627,19 @@ export default function AdminPage() {
         maxWidth="xs"
         fullWidth
       >
-        <DialogTitle>Подтверждение удаления</DialogTitle>
+        <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
           <Typography>
-            Вы уверены, что хотите удалить <strong>{deleteDialog.product?.name}</strong>?
-            Это действие нельзя отменить.
+            Are you sure you want to delete <strong>{deleteDialog.product?.name}</strong>?
+            This action cannot be undone.
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialog({ open: false, product: null })}>
-            Отмена
+            Cancel
           </Button>
           <Button variant="contained" color="error" onClick={handleDelete}>
-            Удалить
+            Delete
           </Button>
         </DialogActions>
       </Dialog>

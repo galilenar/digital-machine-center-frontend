@@ -53,7 +53,7 @@ import {
 } from '../types';
 import { productsApi } from '../services/api';
 
-const steps = ['Основные данные', 'Параметры станка', 'Цена и контент'];
+const steps = ['General Info', 'Machine Parameters', 'Pricing & Content'];
 
 const emptyForm: Partial<Product> = {
   name: '',
@@ -111,7 +111,7 @@ export default function DealerPage() {
         const allData = await productsApi.getAll();
         setMyProducts(allData);
       } catch {
-        setSnackbar({ open: true, message: 'Ошибка загрузки продуктов', severity: 'error' });
+        setSnackbar({ open: true, message: 'Failed to load products', severity: 'error' });
       }
     } finally {
       setLoadingProducts(false);
@@ -137,7 +137,7 @@ export default function DealerPage() {
         await productsApi.update(editingProduct.id, payload);
         setSnackbar({
           open: true,
-          message: 'Продукт обновлён!',
+          message: 'Product updated!',
           severity: 'success',
         });
       } else {
@@ -145,8 +145,8 @@ export default function DealerPage() {
         setSnackbar({
           open: true,
           message: asDraft
-            ? 'Продукт сохранён как черновик!'
-            : 'Продукт отправлен на модерацию!',
+            ? 'Product saved as draft!'
+            : 'Product submitted for review!',
           severity: 'success',
         });
       }
@@ -156,7 +156,7 @@ export default function DealerPage() {
       setActiveTab(0);
       fetchMyProducts();
     } catch {
-      setSnackbar({ open: true, message: 'Ошибка сохранения', severity: 'error' });
+      setSnackbar({ open: true, message: 'Failed to save', severity: 'error' });
     }
   };
 
@@ -195,11 +195,11 @@ export default function DealerPage() {
     if (!deleteDialog.product) return;
     try {
       await productsApi.delete(deleteDialog.product.id);
-      setSnackbar({ open: true, message: 'Продукт удалён', severity: 'success' });
+      setSnackbar({ open: true, message: 'Product deleted', severity: 'success' });
       setDeleteDialog({ open: false, product: null });
       fetchMyProducts();
     } catch {
-      setSnackbar({ open: true, message: 'Ошибка удаления', severity: 'error' });
+      setSnackbar({ open: true, message: 'Failed to delete', severity: 'error' });
     }
   };
 
@@ -221,7 +221,7 @@ export default function DealerPage() {
     <Grid container spacing={3}>
       <Grid size={{ xs: 12 }}>
         <TextField
-          label="Название продукта"
+          label="Product Name"
           fullWidth
           required
           value={form.name}
@@ -231,10 +231,10 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <FormControl fullWidth>
-          <InputLabel>Тип контента</InputLabel>
+          <InputLabel>Content Type</InputLabel>
           <Select
             value={form.contentType}
-            label="Тип контента"
+            label="Content Type"
             onChange={(e) => handleChange('contentType', e.target.value)}
           >
             {Object.values(ContentType).map((ct) => (
@@ -245,10 +245,10 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <FormControl fullWidth>
-          <InputLabel>Категория</InputLabel>
+          <InputLabel>Category</InputLabel>
           <Select
             value={form.category}
-            label="Категория"
+            label="Category"
             onChange={(e) => handleChange('category', e.target.value)}
           >
             {Object.values(ContentCategory).map((cat) => (
@@ -259,7 +259,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12 }}>
         <TextField
-          label="Описание"
+          label="Description"
           fullWidth
           multiline
           rows={4}
@@ -269,7 +269,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12 }}>
         <TextField
-          label="Состав комплекта"
+          label="Kit Contents"
           fullWidth
           multiline
           rows={3}
@@ -279,7 +279,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
-          label="Автор"
+          label="Author"
           fullWidth
           value={form.authorName}
           onChange={(e) => handleChange('authorName', e.target.value)}
@@ -287,7 +287,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
-          label="Владелец"
+          label="Owner"
           fullWidth
           value={form.productOwner}
           onChange={(e) => handleChange('productOwner', e.target.value)}
@@ -300,7 +300,7 @@ export default function DealerPage() {
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
-          label="Производитель станка"
+          label="Machine Manufacturer"
           fullWidth
           value={form.machineManufacturer}
           onChange={(e) => handleChange('machineManufacturer', e.target.value)}
@@ -309,10 +309,10 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <FormControl fullWidth>
-          <InputLabel>Тип станка</InputLabel>
+          <InputLabel>Machine Type</InputLabel>
           <Select
             value={form.machineType}
-            label="Тип станка"
+            label="Machine Type"
             onChange={(e) => handleChange('machineType', e.target.value)}
           >
             {Object.values(MachineType).map((mt) => (
@@ -323,7 +323,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
-          label="Серия станка"
+          label="Machine Series"
           fullWidth
           value={form.machineSeries}
           onChange={(e) => handleChange('machineSeries', e.target.value)}
@@ -331,7 +331,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
-          label="Модель станка"
+          label="Machine Model"
           fullWidth
           value={form.machineModel}
           onChange={(e) => handleChange('machineModel', e.target.value)}
@@ -339,7 +339,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 4 }}>
         <TextField
-          label="Количество осей"
+          label="Number of Axes"
           type="number"
           fullWidth
           value={form.numberOfAxes}
@@ -349,7 +349,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 4 }}>
         <TextField
-          label="Производитель ЧПУ"
+          label="Controller Manufacturer"
           fullWidth
           value={form.controllerManufacturer}
           onChange={(e) => handleChange('controllerManufacturer', e.target.value)}
@@ -357,7 +357,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 4 }}>
         <TextField
-          label="Серия ЧПУ"
+          label="Controller Series"
           fullWidth
           value={form.controllerSeries}
           onChange={(e) => handleChange('controllerSeries', e.target.value)}
@@ -365,7 +365,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
-          label="Модель ЧПУ"
+          label="Controller Model"
           fullWidth
           value={form.controllerModel}
           onChange={(e) => handleChange('controllerModel', e.target.value)}
@@ -373,7 +373,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
-          label="Мин. версия ПО"
+          label="Min Software Version"
           fullWidth
           value={form.minSoftwareVersion}
           onChange={(e) => handleChange('minSoftwareVersion', e.target.value)}
@@ -381,23 +381,23 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <FormControl fullWidth>
-          <InputLabel>Статус проверки</InputLabel>
+          <InputLabel>Verification Status</InputLabel>
           <Select
             value={form.experienceStatus}
-            label="Статус проверки"
+            label="Verification Status"
             onChange={(e) => handleChange('experienceStatus', e.target.value)}
           >
-            <MenuItem value={ExperienceStatus.NOT_TESTED}>Не проверено</MenuItem>
-            <MenuItem value={ExperienceStatus.VERIFIED_ON_EQUIPMENT}>Проверено на оборудовании</MenuItem>
+            <MenuItem value={ExperienceStatus.NOT_TESTED}>Not Tested</MenuItem>
+            <MenuItem value={ExperienceStatus.VERIFIED_ON_EQUIPMENT}>Verified on Equipment</MenuItem>
           </Select>
         </FormControl>
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <FormControl fullWidth>
-          <InputLabel>Видимость</InputLabel>
+          <InputLabel>Visibility</InputLabel>
           <Select
             value={form.visibility}
-            label="Видимость"
+            label="Visibility"
             onChange={(e) => handleChange('visibility', e.target.value)}
           >
             {Object.values(Visibility).map((v) => (
@@ -413,7 +413,7 @@ export default function DealerPage() {
     <Grid container spacing={3}>
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
-          label="Цена (EUR)"
+          label="Price (EUR)"
           type="number"
           fullWidth
           value={form.priceEur}
@@ -426,7 +426,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12, sm: 6 }}>
         <TextField
-          label="Пробный период (дней)"
+          label="Trial Period (days)"
           type="number"
           fullWidth
           value={form.trialDays}
@@ -436,7 +436,7 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12 }}>
         <TextField
-          label="URL изображения"
+          label="Image URL"
           fullWidth
           value={form.imageUrl}
           onChange={(e) => handleChange('imageUrl', e.target.value)}
@@ -445,17 +445,17 @@ export default function DealerPage() {
       </Grid>
       <Grid size={{ xs: 12 }}>
         <TextField
-          label="Поддерживаемые коды"
+          label="Supported Codes"
           fullWidth
           value={form.supportedCodes}
           onChange={(e) => handleChange('supportedCodes', e.target.value)}
           placeholder="G00, G01, G02, G03, M03, M05..."
-          helperText="Через запятую"
+          helperText="Comma separated"
         />
       </Grid>
       <Grid size={{ xs: 12 }}>
         <TextField
-          label="Пример выходного кода"
+          label="Sample Output Code"
           fullWidth
           multiline
           rows={8}
@@ -474,11 +474,11 @@ export default function DealerPage() {
       {/* Stats bar */}
       <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
         {[
-          { label: 'Всего', count: statusCounts.all, color: '#90caf9' },
-          { label: 'Черновики', count: statusCounts.draft, color: statusColors[PublicationStatus.DRAFT] },
-          { label: 'На модерации', count: statusCounts.pending, color: statusColors[PublicationStatus.PENDING_REVIEW] },
-          { label: 'Опубликовано', count: statusCounts.published, color: statusColors[PublicationStatus.PUBLISHED] },
-          { label: 'Отклонено', count: statusCounts.rejected, color: statusColors[PublicationStatus.REJECTED] },
+          { label: 'Total', count: statusCounts.all, color: '#90caf9' },
+          { label: 'Drafts', count: statusCounts.draft, color: statusColors[PublicationStatus.DRAFT] },
+          { label: 'Pending', count: statusCounts.pending, color: statusColors[PublicationStatus.PENDING_REVIEW] },
+          { label: 'Published', count: statusCounts.published, color: statusColors[PublicationStatus.PUBLISHED] },
+          { label: 'Rejected', count: statusCounts.rejected, color: statusColors[PublicationStatus.REJECTED] },
         ].map((s) => (
           <Paper
             key={s.label}
@@ -519,7 +519,7 @@ export default function DealerPage() {
           }}
         >
           <Typography color="text.secondary" sx={{ mb: 2 }}>
-            У вас пока нет продуктов
+            You have no products yet
           </Typography>
           <Button
             variant="contained"
@@ -527,7 +527,7 @@ export default function DealerPage() {
             onClick={() => setActiveTab(1)}
             sx={{ bgcolor: '#00CB9A', '&:hover': { bgcolor: '#00b388' } }}
           >
-            Создать первый продукт
+            Create First Product
           </Button>
         </Paper>
       ) : (
@@ -612,12 +612,12 @@ export default function DealerPage() {
 
               {/* Actions */}
               <Box sx={{ display: 'flex', gap: 0.5 }}>
-                <Tooltip title="Редактировать">
+                <Tooltip title="Edit">
                   <IconButton size="small" onClick={() => handleEdit(product)}>
                     <EditIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
-                <Tooltip title="Удалить">
+                <Tooltip title="Delete">
                   <IconButton
                     size="small"
                     color="error"
@@ -642,11 +642,11 @@ export default function DealerPage() {
           sx={{ mb: 3 }}
           action={
             <Button size="small" onClick={handleCancelEdit}>
-              Отменить
+              Cancel
             </Button>
           }
         >
-          Редактирование: <strong>{editingProduct.name}</strong>
+          Editing: <strong>{editingProduct.name}</strong>
         </Alert>
       )}
 
@@ -709,7 +709,7 @@ export default function DealerPage() {
           startIcon={<BackIcon />}
           onClick={() => setActiveStep((prev) => prev - 1)}
         >
-          Назад
+          Back
         </Button>
 
         <Box sx={{ display: 'flex', gap: 1 }}>
@@ -720,7 +720,7 @@ export default function DealerPage() {
                 startIcon={<SaveIcon />}
                 onClick={() => handleSubmit(true)}
               >
-                Сохранить как черновик
+                Save as Draft
               </Button>
               <Button
                 variant="contained"
@@ -728,7 +728,7 @@ export default function DealerPage() {
                 onClick={() => handleSubmit(false)}
                 sx={{ bgcolor: '#00CB9A', '&:hover': { bgcolor: '#00b388' } }}
               >
-                Отправить на модерацию
+                Submit for Review
               </Button>
             </>
           ) : (
@@ -738,7 +738,7 @@ export default function DealerPage() {
               onClick={() => setActiveStep((prev) => prev + 1)}
               sx={{ bgcolor: '#1269D9', '&:hover': { bgcolor: '#0d4a97' } }}
             >
-              Далее
+              Next
             </Button>
           )}
         </Box>
@@ -752,10 +752,10 @@ export default function DealerPage() {
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
         <Box>
           <Typography variant="h5" fontWeight={700}>
-            Панель дилера
+            Dealer Dashboard
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mt: 0.3 }}>
-            Управление вашими станками и постами
+            Manage your machines and posts
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
@@ -766,7 +766,7 @@ export default function DealerPage() {
             onClick={fetchMyProducts}
             sx={{ borderColor: 'rgba(255,255,255,0.12)', color: 'rgba(245,245,245,0.6)' }}
           >
-            Обновить
+            Refresh
           </Button>
           <Button
             variant="contained"
@@ -778,7 +778,7 @@ export default function DealerPage() {
             }}
             sx={{ bgcolor: '#00CB9A', '&:hover': { bgcolor: '#00b388' } }}
           >
-            Создать
+            Create
           </Button>
         </Box>
       </Box>
@@ -797,11 +797,11 @@ export default function DealerPage() {
         <Tab
           label={
             <Badge badgeContent={myProducts.length} color="primary" max={999}>
-              <Box sx={{ pr: 2 }}>Мои продукты</Box>
+              <Box sx={{ pr: 2 }}>My Products</Box>
             </Badge>
           }
         />
-        <Tab label={editingProduct ? 'Редактирование' : 'Создать новый'} />
+        <Tab label={editingProduct ? 'Edit Product' : 'Create New'} />
       </Tabs>
 
       {/* Content */}
@@ -814,19 +814,19 @@ export default function DealerPage() {
         maxWidth="xs"
         fullWidth
       >
-        <DialogTitle>Подтверждение удаления</DialogTitle>
+        <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
           <Typography>
-            Вы уверены, что хотите удалить <strong>{deleteDialog.product?.name}</strong>?
-            Это действие нельзя отменить.
+            Are you sure you want to delete <strong>{deleteDialog.product?.name}</strong>?
+            This action cannot be undone.
           </Typography>
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteDialog({ open: false, product: null })}>
-            Отмена
+            Cancel
           </Button>
           <Button variant="contained" color="error" onClick={handleDelete}>
-            Удалить
+            Delete
           </Button>
         </DialogActions>
       </Dialog>
