@@ -108,6 +108,8 @@ export interface SearchRequest {
   contentOwner?: string;
   page?: number;
   size?: number;
+  sortBy?: string;
+  sortDir?: string;
 }
 
 export interface SearchResponse {

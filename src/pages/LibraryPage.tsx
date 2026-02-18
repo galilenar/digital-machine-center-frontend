@@ -59,7 +59,8 @@ export default function LibraryPage() {
   const [error, setError] = useState('');
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
 
-  const [filters, setFilters] = useState<SearchRequest>({ page: 0, size: 100 });
+  const [sortMode, setSortMode] = useState<'recent' | 'popular'>('popular');
+  const [filters, setFilters] = useState<SearchRequest>({ page: 0, size: 100, sortBy: 'downloadCount', sortDir: 'desc' });
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
@@ -141,25 +142,63 @@ export default function LibraryPage() {
           justifyContent: 'flex-end',
         }}
       >
-        <Box
+        <Select
+          value={sortMode}
+          onChange={(e) => {
+            const mode = e.target.value as 'recent' | 'popular';
+            setSortMode(mode);
+            setFilters((prev) => ({
+              ...prev,
+              sortBy: mode === 'recent' ? 'createdAt' : 'downloadCount',
+              sortDir: 'desc',
+              page: 0,
+            }));
+          }}
+          variant="standard"
+          disableUnderline
           sx={{
-            display: 'flex',
-            alignItems: 'center',
             bgcolor: 'rgba(255,255,255,0.06)',
             borderRadius: '4px',
             border: '1px solid rgba(255,255,255,0.08)',
             px: 1.2,
-            py: 0.3,
             height: 26,
-            whiteSpace: 'nowrap',
+            fontSize: '0.72rem',
+            color: 'rgba(245,245,245,0.55)',
             flexShrink: 0,
+            '& .MuiSelect-select': {
+              py: 0,
+              pr: '22px !important',
+              pl: 0.3,
+              display: 'flex',
+              alignItems: 'center',
+            },
+            '& .MuiSelect-icon': {
+              color: 'rgba(245,245,245,0.4)',
+              fontSize: 16,
+              right: 4,
+            },
+          }}
+          MenuProps={{
+            PaperProps: {
+              sx: {
+                bgcolor: '#262830',
+                border: '1px solid rgba(255,255,255,0.1)',
+                borderRadius: 1,
+                mt: 0.5,
+                '& .MuiMenuItem-root': {
+                  fontSize: '0.75rem',
+                  color: '#C0C4D0',
+                  py: 0.8,
+                  '&:hover': { bgcolor: 'rgba(255,255,255,0.06)' },
+                  '&.Mui-selected': { bgcolor: 'rgba(0,203,154,0.15)', color: '#00CB9A', borderLeft: '3px solid #00CB9A' },
+                },
+              },
+            },
           }}
         >
-          <Typography sx={{ color: 'rgba(245,245,245,0.55)', fontSize: '0.72rem' }}>
-            Recent
-          </Typography>
-          <Box sx={{ width: 0, height: 0, borderLeft: '3px solid transparent', borderRight: '3px solid transparent', borderTop: '4px solid rgba(245,245,245,0.4)', ml: 0.6 }} />
-        </Box>
+          <MenuItem value="recent">Recent</MenuItem>
+          <MenuItem value="popular">Popular</MenuItem>
+        </Select>
 
         <Box
           onClick={() => setFiltersVisible((v) => !v)}
