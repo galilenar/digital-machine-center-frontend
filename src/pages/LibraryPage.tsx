@@ -333,8 +333,8 @@ export default function LibraryPage() {
                 <Skeleton
                   key={i}
                   variant="rounded"
-                  width={195}
-                  height={170}
+                  width={250}
+                  height={230}
                   sx={{ bgcolor: 'rgba(255,255,255,0.05)', borderRadius: 1.5, flexShrink: 0 }}
                 />
               ))
@@ -513,8 +513,8 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
     <Box
       onClick={onClick}
       sx={{
-        width: 195,
-        borderRadius: 1.5,
+        width: 250,
+        borderRadius: 2,
         bgcolor: '#1E2230',
         border: '2px solid',
         borderColor: selected ? '#00BCD4' : 'transparent',
@@ -532,7 +532,7 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
       {/* Image area */}
       <Box
         sx={{
-          height: 90,
+          height: 150,
           bgcolor: '#2A2D3A',
           display: 'flex',
           alignItems: 'center',
@@ -571,10 +571,10 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
       </Box>
 
       {/* Info */}
-      <Box sx={{ px: 1, py: 0.8 }}>
+      <Box sx={{ px: 1.5, py: 1.2 }}>
         <Typography
           sx={{
-            fontSize: '0.73rem',
+            fontSize: '0.9rem',
             fontWeight: 600,
             color: '#E8E8E8',
             overflow: 'hidden',
@@ -587,17 +587,17 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
         >
           {product.name}
         </Typography>
-        <Typography sx={{ fontSize: '0.62rem', color: 'rgba(245,245,245,0.35)', mt: 0.3 }}>
+        <Typography sx={{ fontSize: '0.75rem', color: 'rgba(245,245,245,0.35)', mt: 0.5 }}>
           Update: {product.updatedAt ? new Date(product.updatedAt).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—'}
         </Typography>
         <Typography
           sx={{
-            fontSize: '0.62rem',
+            fontSize: '0.75rem',
             color: 'rgba(245,245,245,0.35)',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             whiteSpace: 'nowrap',
-            mt: 0.3,
+            mt: 0.5,
           }}
         >
           {product.productOwner || 'ENCY Clouds'}
