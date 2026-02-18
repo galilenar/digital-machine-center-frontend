@@ -568,48 +568,62 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
 
       {/* Info */}
       <Box sx={{ px: 1, py: 0.8 }}>
-        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-          <Typography
-            sx={{
-              fontSize: '0.73rem',
-              fontWeight: 600,
-              color: '#E8E8E8',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              lineHeight: 1.3,
-              flex: 1,
-            }}
-          >
-            {product.name}
-          </Typography>
-          <Typography sx={{ fontSize: '0.6rem', color: 'rgba(245,245,245,0.25)', ml: 0.5, flexShrink: 0 }}>
-            🔗
-          </Typography>
-        </Box>
+        <Typography
+          sx={{
+            fontSize: '0.73rem',
+            fontWeight: 600,
+            color: '#E8E8E8',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            lineHeight: 1.3,
+          }}
+        >
+          {product.name}
+        </Typography>
         <Typography sx={{ fontSize: '0.62rem', color: 'rgba(245,245,245,0.35)', mt: 0.3 }}>
           Update: {product.updatedAt ? new Date(product.updatedAt).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—'}
         </Typography>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 0.3 }}>
-          <Typography
+        <Typography
+          sx={{
+            fontSize: '0.62rem',
+            color: 'rgba(245,245,245,0.35)',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+            mt: 0.3,
+          }}
+        >
+          {product.productOwner || 'ENCY Clouds'}
+        </Typography>
+      </Box>
+
+      {/* License button */}
+      {product.trialDays > 0 && (
+        <Box sx={{ px: 1, pb: 0.8 }}>
+          <Box
             sx={{
-              fontSize: '0.62rem',
-              color: 'rgba(245,245,245,0.35)',
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              whiteSpace: 'nowrap',
-              flex: 1,
+              background: 'linear-gradient(135deg, #00CB9A, #1269D9)',
+              borderRadius: '6px',
+              py: 0.5,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 0.5,
+              cursor: 'pointer',
+              transition: 'opacity 0.15s',
+              '&:hover': { opacity: 0.85 },
             }}
           >
-            {product.productOwner || 'ENCY Clouds'}
-          </Typography>
-          <Typography sx={{ fontSize: '0.8rem', color: 'rgba(245,245,245,0.2)', cursor: 'pointer' }}>
-            ⋮
-          </Typography>
+            <TrialIcon sx={{ fontSize: 13, color: '#fff' }} />
+            <Typography sx={{ fontSize: '0.62rem', fontWeight: 600, color: '#fff' }}>
+              Get Trial License
+            </Typography>
+          </Box>
         </Box>
-      </Box>
+      )}
     </Box>
   );
 }
