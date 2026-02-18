@@ -61,6 +61,7 @@ export default function LibraryPage() {
 
   const [filters, setFilters] = useState<SearchRequest>({ page: 0, size: 100 });
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [filtersVisible, setFiltersVisible] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
 
   // Load filter options
@@ -128,7 +129,7 @@ export default function LibraryPage() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      {/* ==================== FILTER BAR ==================== */}
+      {/* ==================== TOP BAR (Sort + Filters toggle) ==================== */}
       <Box
         sx={{
           display: 'flex',
@@ -136,75 +137,10 @@ export default function LibraryPage() {
           gap: 0.6,
           px: 1.5,
           py: 0.5,
-          overflowX: 'auto',
           flexShrink: 0,
-          '&::-webkit-scrollbar': { height: 3 },
-          '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255,255,255,0.08)', borderRadius: 2 },
+          justifyContent: 'flex-end',
         }}
       >
-        <FilterChip
-          label="Category"
-          value={filters.category || ''}
-          options={filterOptions?.categories ?? []}
-          onChange={(v) => handleFilterChange('category', v)}
-        />
-        <FilterChip
-          label="Content"
-          value={filters.contentType || ''}
-          options={filterOptions?.contentTypes ?? []}
-          onChange={(v) => handleFilterChange('contentType', v)}
-        />
-        <FilterChip
-          label="Machine type"
-          value={filters.machineType || ''}
-          options={filterOptions?.machineTypes ?? []}
-          onChange={(v) => handleFilterChange('machineType', v)}
-        />
-        <FilterChip
-          label="Provided by"
-          value={filters.machineManufacturer || ''}
-          options={filterOptions?.machineManufacturers ?? []}
-          onChange={(v) => handleFilterChange('machineManufacturer', v)}
-        />
-        <FilterChip
-          label="Controller"
-          value={filters.controllerManufacturer || ''}
-          options={filterOptions?.controllerManufacturers ?? []}
-          onChange={(v) => handleFilterChange('controllerManufacturer', v)}
-        />
-        <FilterChip
-          label="Axes"
-          value={filters.numberOfAxes ?? ''}
-          options={(filterOptions?.numberOfAxes ?? []).map(String)}
-          onChange={(v) => handleFilterChange('numberOfAxes', v ? Number(v) : undefined)}
-        />
-        <FilterChip
-          label="Owner"
-          value={filters.contentOwner || ''}
-          options={filterOptions?.contentOwners ?? []}
-          onChange={(v) => handleFilterChange('contentOwner', v)}
-        />
-
-        {activeFilterCount > 0 && (
-          <Typography
-            onClick={clearFilters}
-            sx={{
-              fontSize: '0.72rem',
-              color: 'rgba(245,245,245,0.4)',
-              cursor: 'pointer',
-              whiteSpace: 'nowrap',
-              ml: 0.5,
-              '&:hover': { color: 'rgba(245,245,245,0.7)' },
-            }}
-          >
-            Clear all
-          </Typography>
-        )}
-
-        {/* Spacer */}
-        <Box sx={{ flex: 1 }} />
-
-        {/* Sort + Filters button (decorative, matching WPF) */}
         <Box
           sx={{
             display: 'flex',
@@ -226,8 +162,9 @@ export default function LibraryPage() {
         </Box>
 
         <Box
+          onClick={() => setFiltersVisible((v) => !v)}
           sx={{
-            bgcolor: '#00CB9A',
+            bgcolor: filtersVisible ? '#009B76' : '#00CB9A',
             borderRadius: '4px',
             px: 1.5,
             py: 0.3,
@@ -236,13 +173,92 @@ export default function LibraryPage() {
             alignItems: 'center',
             flexShrink: 0,
             cursor: 'pointer',
+            userSelect: 'none',
+            transition: 'background-color 0.15s',
+            '&:hover': { bgcolor: filtersVisible ? '#008766' : '#00b88a' },
           }}
         >
           <Typography sx={{ color: '#fff', fontSize: '0.72rem', fontWeight: 600 }}>
-            Filters
+            Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
           </Typography>
         </Box>
       </Box>
+
+      {/* ==================== COLLAPSIBLE FILTER BAR ==================== */}
+      {filtersVisible && (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 0.6,
+            px: 1.5,
+            py: 0.5,
+            overflowX: 'auto',
+            flexShrink: 0,
+            '&::-webkit-scrollbar': { height: 3 },
+            '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255,255,255,0.08)', borderRadius: 2 },
+          }}
+        >
+          <FilterChip
+            label="Category"
+            value={filters.category || ''}
+            options={filterOptions?.categories ?? []}
+            onChange={(v) => handleFilterChange('category', v)}
+          />
+          <FilterChip
+            label="Content"
+            value={filters.contentType || ''}
+            options={filterOptions?.contentTypes ?? []}
+            onChange={(v) => handleFilterChange('contentType', v)}
+          />
+          <FilterChip
+            label="Machine type"
+            value={filters.machineType || ''}
+            options={filterOptions?.machineTypes ?? []}
+            onChange={(v) => handleFilterChange('machineType', v)}
+          />
+          <FilterChip
+            label="Provided by"
+            value={filters.machineManufacturer || ''}
+            options={filterOptions?.machineManufacturers ?? []}
+            onChange={(v) => handleFilterChange('machineManufacturer', v)}
+          />
+          <FilterChip
+            label="Controller"
+            value={filters.controllerManufacturer || ''}
+            options={filterOptions?.controllerManufacturers ?? []}
+            onChange={(v) => handleFilterChange('controllerManufacturer', v)}
+          />
+          <FilterChip
+            label="Axes"
+            value={filters.numberOfAxes ?? ''}
+            options={(filterOptions?.numberOfAxes ?? []).map(String)}
+            onChange={(v) => handleFilterChange('numberOfAxes', v ? Number(v) : undefined)}
+          />
+          <FilterChip
+            label="Owner"
+            value={filters.contentOwner || ''}
+            options={filterOptions?.contentOwners ?? []}
+            onChange={(v) => handleFilterChange('contentOwner', v)}
+          />
+
+          {activeFilterCount > 0 && (
+            <Typography
+              onClick={clearFilters}
+              sx={{
+                fontSize: '0.72rem',
+                color: 'rgba(245,245,245,0.4)',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                ml: 0.5,
+                '&:hover': { color: 'rgba(245,245,245,0.7)' },
+              }}
+            >
+              Clear all
+            </Typography>
+          )}
+        </Box>
+      )}
 
       {/* ==================== CONTENT ==================== */}
       <Box sx={{ flex: 1, overflow: 'auto', position: 'relative' }}>
