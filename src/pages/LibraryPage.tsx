@@ -377,11 +377,15 @@ export default function LibraryPage() {
             <IconButton
               onClick={() => setSelectedProduct(null)}
               sx={{
-                position: 'absolute',
+                position: 'sticky',
                 top: 8,
-                right: 8,
-                color: 'rgba(245,245,245,0.5)',
-                zIndex: 1,
+                float: 'right',
+                mr: 1,
+                mt: 1,
+                color: 'rgba(245,245,245,0.7)',
+                zIndex: 10,
+                bgcolor: 'rgba(30,34,48,0.8)',
+                '&:hover': { bgcolor: 'rgba(255,255,255,0.1)' },
               }}
               size="small"
             >
