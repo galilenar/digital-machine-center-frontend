@@ -342,6 +342,7 @@ export default function LibraryPage() {
                 <ProjectCard
                   key={product.id}
                   product={product}
+                  selected={selectedProduct?.id === product.id}
                   onClick={() => setSelectedProduct(product)}
                 />
               ))}
@@ -503,7 +504,7 @@ function FilterChip({
 
 /* ─── Project Card (matches WPF layout) ─── */
 
-function ProjectCard({ product, onClick }: { product: Product; onClick: () => void }) {
+function ProjectCard({ product, selected, onClick }: { product: Product; selected?: boolean; onClick: () => void }) {
   return (
     <Box
       onClick={onClick}
@@ -511,7 +512,9 @@ function ProjectCard({ product, onClick }: { product: Product; onClick: () => vo
         width: 195,
         borderRadius: 1.5,
         bgcolor: '#1E2230',
-        border: '2px solid transparent',
+        border: '2px solid',
+        borderColor: selected ? '#00BCD4' : 'transparent',
+        boxShadow: selected ? '0 0 12px rgba(0,188,212,0.25)' : 'none',
         overflow: 'hidden',
         cursor: 'pointer',
         flexShrink: 0,
