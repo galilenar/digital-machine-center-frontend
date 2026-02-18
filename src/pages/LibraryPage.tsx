@@ -765,13 +765,18 @@ function DetailPanel({
           <Button
             fullWidth
             variant="contained"
+            disabled={!isAuthenticated}
             startIcon={<TrialIcon />}
             onClick={onTrial}
             sx={{
-              background: 'linear-gradient(135deg, #00CB9A, #1269D9)',
+              background: isAuthenticated ? 'linear-gradient(135deg, #00CB9A, #1269D9)' : undefined,
               fontWeight: 600,
               py: 1,
               '&:hover': { opacity: 0.85 },
+              '&.Mui-disabled': {
+                background: 'linear-gradient(135deg, rgba(0,203,154,0.35), rgba(18,105,217,0.35))',
+                color: 'rgba(255,255,255,0.4)',
+              },
             }}
           >
             Get Trial License
