@@ -68,8 +68,15 @@ export default function LibraryPage() {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+  const loadingMoreRef = useRef(false);
+  const hasMoreRef = useRef(true);
+  const productsRef = useRef<Product[]>([]);
+  const filtersRef = useRef(filters);
+
+  useEffect(() => { filtersRef.current = filters; }, [filters]);
+  useEffect(() => { hasMoreRef.current = hasMore; }, [hasMore]);
+  useEffect(() => { productsRef.current = products; }, [products]);
 
   useEffect(() => {
     productsApi.getFilters().then(setFilterOptions).catch(() => {});
@@ -81,11 +88,14 @@ export default function LibraryPage() {
     try {
       const res = await productsApi.search({ ...filters, page: 0, size: PAGE_SIZE });
       setProducts(res.content);
-      setHasMore(res.content.length < res.totalElements);
+      const more = res.content.length < res.totalElements;
+      setHasMore(more);
+      hasMoreRef.current = more;
     } catch {
       setError('Failed to load projects. Check if the API is running.');
       setProducts([]);
       setHasMore(false);
+      hasMoreRef.current = false;
     } finally {
       setLoading(false);
     }
@@ -96,35 +106,40 @@ export default function LibraryPage() {
   }, [fetchProducts]);
 
   const loadMore = useCallback(async () => {
-    if (loadingMore || !hasMore) return;
+    if (loadingMoreRef.current || !hasMoreRef.current) return;
+    loadingMoreRef.current = true;
     setLoadingMore(true);
     try {
-      const nextPage = Math.floor(products.length / PAGE_SIZE);
-      const res = await productsApi.search({ ...filters, page: nextPage, size: PAGE_SIZE });
+      const nextPage = Math.floor(productsRef.current.length / PAGE_SIZE);
+      const res = await productsApi.search({ ...filtersRef.current, page: nextPage, size: PAGE_SIZE });
       setProducts((prev) => {
         const existingIds = new Set(prev.map((p) => p.id));
         const newItems = res.content.filter((p) => !existingIds.has(p.id));
-        return [...prev, ...newItems];
+        const updated = [...prev, ...newItems];
+        productsRef.current = updated;
+        return updated;
       });
-      setHasMore(res.content.length === PAGE_SIZE && (nextPage + 1) * PAGE_SIZE < res.totalElements);
+      const more = res.content.length === PAGE_SIZE && (nextPage + 1) * PAGE_SIZE < res.totalElements;
+      setHasMore(more);
+      hasMoreRef.current = more;
     } catch {
-      // silently fail, user can scroll again
+      // silently fail
     } finally {
+      loadingMoreRef.current = false;
       setLoadingMore(false);
     }
-  }, [loadingMore, hasMore, products.length, filters]);
+  }, []);
 
   useEffect(() => {
-    const sentinel = sentinelRef.current;
-    if (!sentinel) return;
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) loadMore();
-      },
-      { root: scrollContainerRef.current, threshold: 0, rootMargin: '200px' },
-    );
-    observer.observe(sentinel);
-    return () => observer.disconnect();
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    const handleScroll = () => {
+      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 400) {
+        loadMore();
+      }
+    };
+    el.addEventListener('scroll', handleScroll, { passive: true });
+    return () => el.removeEventListener('scroll', handleScroll);
   }, [loadMore]);
 
   const handleFilterChange = (field: keyof SearchRequest, value: unknown) => {
@@ -398,7 +413,6 @@ export default function LibraryPage() {
             ))}
         </Box>
 
-        <Box ref={sentinelRef} sx={{ height: 1 }} />
       </Box>
 
       {/* ==================== DETAIL OVERLAY ==================== */}
