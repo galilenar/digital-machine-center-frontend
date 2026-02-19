@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import {
   Box,
   Typography,
@@ -59,27 +59,33 @@ export default function LibraryPage() {
   const [error, setError] = useState('');
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
 
+  const PAGE_SIZE = 30;
+
   const [sortMode, setSortMode] = useState<'recent' | 'popular'>('recent');
-  const [filters, setFilters] = useState<SearchRequest>({ page: 0, size: 100, sortBy: 'createdAt', sortDir: 'desc' });
+  const [filters, setFilters] = useState<SearchRequest>({ page: 0, size: PAGE_SIZE, sortBy: 'createdAt', sortDir: 'desc' });
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
+  const [hasMore, setHasMore] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
-  // Load filter options
   useEffect(() => {
     productsApi.getFilters().then(setFilterOptions).catch(() => {});
   }, []);
 
-  // Search products
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     setError('');
     try {
-      const res = await productsApi.search(filters);
+      const res = await productsApi.search({ ...filters, page: 0, size: PAGE_SIZE });
       setProducts(res.content);
+      setHasMore(res.content.length < res.totalElements);
     } catch {
       setError('Failed to load projects. Check if the API is running.');
       setProducts([]);
+      setHasMore(false);
     } finally {
       setLoading(false);
     }
@@ -89,12 +95,44 @@ export default function LibraryPage() {
     fetchProducts();
   }, [fetchProducts]);
 
+  const loadMore = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    try {
+      const nextPage = Math.floor(products.length / PAGE_SIZE);
+      const res = await productsApi.search({ ...filters, page: nextPage, size: PAGE_SIZE });
+      setProducts((prev) => {
+        const existingIds = new Set(prev.map((p) => p.id));
+        const newItems = res.content.filter((p) => !existingIds.has(p.id));
+        return [...prev, ...newItems];
+      });
+      setHasMore(res.content.length === PAGE_SIZE && (nextPage + 1) * PAGE_SIZE < res.totalElements);
+    } catch {
+      // silently fail, user can scroll again
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [loadingMore, hasMore, products.length, filters]);
+
+  useEffect(() => {
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) loadMore();
+      },
+      { root: scrollContainerRef.current, threshold: 0, rootMargin: '200px' },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [loadMore]);
+
   const handleFilterChange = (field: keyof SearchRequest, value: unknown) => {
     setFilters((prev) => ({ ...prev, [field]: value || undefined, page: 0 }));
   };
 
   const clearFilters = () => {
-    setFilters({ page: 0, size: 100 });
+    setFilters({ page: 0, size: PAGE_SIZE, sortBy: filters.sortBy, sortDir: filters.sortDir });
   };
 
   const activeFilterCount = [
@@ -152,6 +190,7 @@ export default function LibraryPage() {
               sortBy: mode === 'recent' ? 'createdAt' : 'downloadCount',
               sortDir: 'desc',
               page: 0,
+              size: PAGE_SIZE,
             }));
           }}
           variant="standard"
@@ -312,7 +351,7 @@ export default function LibraryPage() {
       )}
 
       {/* ==================== CONTENT ==================== */}
-      <Box sx={{ flex: 1, overflow: 'auto', position: 'relative' }}>
+      <Box ref={scrollContainerRef} sx={{ flex: 1, overflow: 'auto', position: 'relative' }}>
         {error && (
           <Alert severity="warning" sx={{ mx: 1.5, mb: 1, bgcolor: 'rgba(255, 152, 0, 0.1)', color: '#ffb74d' }}>
             {error}
@@ -346,7 +385,20 @@ export default function LibraryPage() {
                   onClick={() => setSelectedProduct(product)}
                 />
               ))}
+
+          {loadingMore &&
+            Array.from({ length: 6 }).map((_, i) => (
+              <Skeleton
+                key={`more-${i}`}
+                variant="rounded"
+                width={250}
+                height={230}
+                sx={{ bgcolor: 'rgba(255,255,255,0.05)', borderRadius: 1.5, flexShrink: 0 }}
+              />
+            ))}
         </Box>
+
+        <Box ref={sentinelRef} sx={{ height: 1 }} />
       </Box>
 
       {/* ==================== DETAIL OVERLAY ==================== */}
