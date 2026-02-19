@@ -70,13 +70,12 @@ export default function LibraryPage() {
   const [loadingMore, setLoadingMore] = useState(false);
   const loadingMoreRef = useRef(false);
   const hasMoreRef = useRef(true);
-  const productsRef = useRef<Product[]>([]);
+  const nextPageRef = useRef(1);
   const filtersRef = useRef(filters);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => { filtersRef.current = filters; }, [filters]);
   useEffect(() => { hasMoreRef.current = hasMore; }, [hasMore]);
-  useEffect(() => { productsRef.current = products; }, [products]);
 
   useEffect(() => {
     productsApi.getFilters().then(setFilterOptions).catch(() => {});
@@ -88,6 +87,7 @@ export default function LibraryPage() {
     try {
       const res = await productsApi.search({ ...filters, page: 0, size: PAGE_SIZE });
       setProducts(res.content);
+      nextPageRef.current = 1;
       const more = res.content.length < res.totalElements;
       setHasMore(more);
       hasMoreRef.current = more;
@@ -110,16 +110,11 @@ export default function LibraryPage() {
     loadingMoreRef.current = true;
     setLoadingMore(true);
     try {
-      const nextPage = Math.floor(productsRef.current.length / PAGE_SIZE);
-      const res = await productsApi.search({ ...filtersRef.current, page: nextPage, size: PAGE_SIZE });
-      setProducts((prev) => {
-        const existingIds = new Set(prev.map((p) => p.id));
-        const newItems = res.content.filter((p) => !existingIds.has(p.id));
-        const updated = [...prev, ...newItems];
-        productsRef.current = updated;
-        return updated;
-      });
-      const more = res.content.length === PAGE_SIZE && (nextPage + 1) * PAGE_SIZE < res.totalElements;
+      const page = nextPageRef.current;
+      const res = await productsApi.search({ ...filtersRef.current, page, size: PAGE_SIZE });
+      nextPageRef.current = page + 1;
+      setProducts((prev) => [...prev, ...res.content]);
+      const more = res.content.length === PAGE_SIZE && (page + 1) * PAGE_SIZE < res.totalElements;
       setHasMore(more);
       hasMoreRef.current = more;
     } catch {
