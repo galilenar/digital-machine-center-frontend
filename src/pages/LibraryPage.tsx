@@ -157,40 +157,48 @@ export default function LibraryPage() {
           variant="standard"
           disableUnderline
           sx={{
-            bgcolor: 'rgba(255,255,255,0.06)',
-            borderRadius: '4px',
-            border: '1px solid rgba(255,255,255,0.08)',
-            px: 1.2,
-            height: 26,
-            fontSize: '0.72rem',
-            color: 'rgba(245,245,245,0.55)',
+            bgcolor: '#262830',
+            borderRadius: '16px',
+            border: '1px solid #3A3E46',
+            px: 1.8,
+            height: 34,
+            fontSize: '0.82rem',
+            color: '#C0C4D0',
             flexShrink: 0,
             '& .MuiSelect-select': {
               py: 0,
-              pr: '22px !important',
-              pl: 0.3,
+              pr: '26px !important',
+              pl: 0.5,
               display: 'flex',
               alignItems: 'center',
             },
             '& .MuiSelect-icon': {
-              color: 'rgba(245,245,245,0.4)',
-              fontSize: 16,
-              right: 4,
+              color: '#808599',
+              fontSize: 18,
+              right: 8,
             },
           }}
           MenuProps={{
             PaperProps: {
               sx: {
                 bgcolor: '#262830',
-                border: '1px solid rgba(255,255,255,0.1)',
-                borderRadius: 1,
+                border: '1px solid #3A3E46',
+                borderRadius: '10px',
                 mt: 0.5,
+                py: 0.5,
                 '& .MuiMenuItem-root': {
-                  fontSize: '0.75rem',
-                  color: '#C0C4D0',
-                  py: 0.8,
-                  '&:hover': { bgcolor: 'rgba(255,255,255,0.06)' },
-                  '&.Mui-selected': { bgcolor: 'rgba(0,203,154,0.15)', color: '#00CB9A', borderLeft: '3px solid #00CB9A' },
+                  fontSize: '0.85rem',
+                  color: '#A0A4B0',
+                  py: 1,
+                  px: 2,
+                  '&:hover': { bgcolor: '#2A2E38' },
+                  '&.Mui-selected': {
+                    bgcolor: 'transparent',
+                    color: '#fff',
+                    borderLeft: '3px solid #00CB9A',
+                    pl: 1.6,
+                    '&:hover': { bgcolor: '#2A2E38' },
+                  },
                 },
               },
             },
@@ -203,21 +211,25 @@ export default function LibraryPage() {
         <Box
           onClick={() => setFiltersVisible((v) => !v)}
           sx={{
-            bgcolor: filtersVisible ? '#009B76' : '#00CB9A',
-            borderRadius: '4px',
-            px: 1.5,
-            py: 0.3,
-            height: 26,
+            bgcolor: filtersVisible ? 'rgba(0,203,154,0.1)' : '#2A2E38',
+            borderRadius: '16px',
+            border: filtersVisible ? '1px solid #00CB9A' : '1px solid #3A3E46',
+            px: 2,
+            py: 0.5,
+            height: 34,
             display: 'flex',
             alignItems: 'center',
             flexShrink: 0,
             cursor: 'pointer',
             userSelect: 'none',
-            transition: 'background-color 0.15s',
-            '&:hover': { bgcolor: filtersVisible ? '#008766' : '#00b88a' },
+            transition: 'all 0.15s',
+            '&:hover': {
+              borderColor: filtersVisible ? '#00CB9A' : '#505460',
+              bgcolor: filtersVisible ? 'rgba(0,203,154,0.15)' : '#323642',
+            },
           }}
         >
-          <Typography sx={{ color: '#fff', fontSize: '0.72rem', fontWeight: 600 }}>
+          <Typography sx={{ color: filtersVisible ? '#00CB9A' : '#C0C4D0', fontSize: '0.82rem', fontWeight: 600 }}>
             Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
           </Typography>
         </Box>
@@ -301,18 +313,6 @@ export default function LibraryPage() {
 
       {/* ==================== CONTENT ==================== */}
       <Box sx={{ flex: 1, overflow: 'auto', position: 'relative' }}>
-        <Typography
-          sx={{
-            fontWeight: 600,
-            fontSize: '0.85rem',
-            color: '#F5F5F5',
-            px: 1.5,
-            py: 0.5,
-          }}
-        >
-          Projects
-        </Typography>
-
         {error && (
           <Alert severity="warning" sx={{ mx: 1.5, mb: 1, bgcolor: 'rgba(255, 152, 0, 0.1)', color: '#ffb74d' }}>
             {error}
@@ -550,43 +550,46 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
           }}
           sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
         />
-        {product.publicationStatus === 'PUBLISHED' && (
-          <Box
-            sx={{
-              position: 'absolute',
-              top: 6,
-              left: 6,
-              bgcolor: '#00CB9A',
-              borderRadius: '50%',
-              width: 18,
-              height: 18,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Typography sx={{ fontSize: '0.55rem', color: '#fff' }}>✔</Typography>
-          </Box>
-        )}
       </Box>
 
       {/* Info */}
       <Box sx={{ px: 1.5, py: 1.2 }}>
-        <Typography
-          sx={{
-            fontSize: '0.9rem',
-            fontWeight: 600,
-            color: '#E8E8E8',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            display: '-webkit-box',
-            WebkitLineClamp: 2,
-            WebkitBoxOrient: 'vertical',
-            lineHeight: 1.3,
-          }}
-        >
-          {product.name}
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 0.8 }}>
+          <Typography
+            sx={{
+              fontSize: '0.9rem',
+              fontWeight: 600,
+              color: '#E8E8E8',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              lineHeight: 1.3,
+              flex: 1,
+            }}
+          >
+            {product.name}
+          </Typography>
+          {product.publicationStatus === 'PUBLISHED' && (
+            <Box
+              sx={{
+                bgcolor: '#1A1E28',
+                borderRadius: '50%',
+                width: 20,
+                height: 20,
+                minWidth: 20,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '2px solid #00CB9A',
+                mt: 0.2,
+              }}
+            >
+              <Typography sx={{ fontSize: '0.65rem', color: '#00CB9A', fontWeight: 700, lineHeight: 1 }}>✔</Typography>
+            </Box>
+          )}
+        </Box>
         <Typography sx={{ fontSize: '0.75rem', color: 'rgba(245,245,245,0.35)', mt: 0.5 }}>
           Update: {product.updatedAt ? new Date(product.updatedAt).toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—'}
         </Typography>
