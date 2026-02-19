@@ -68,11 +68,11 @@ export default function LibraryPage() {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
   const [hasMore, setHasMore] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const loadingMoreRef = useRef(false);
   const hasMoreRef = useRef(true);
   const productsRef = useRef<Product[]>([]);
   const filtersRef = useRef(filters);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => { filtersRef.current = filters; }, [filters]);
   useEffect(() => { hasMoreRef.current = hasMore; }, [hasMore]);
@@ -131,16 +131,17 @@ export default function LibraryPage() {
   }, []);
 
   useEffect(() => {
-    const el = scrollContainerRef.current;
-    if (!el) return;
-    const handleScroll = () => {
-      if (el.scrollTop + el.clientHeight >= el.scrollHeight - 400) {
-        loadMore();
-      }
-    };
-    el.addEventListener('scroll', handleScroll, { passive: true });
-    return () => el.removeEventListener('scroll', handleScroll);
-  }, [loadMore]);
+    const sentinel = sentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) loadMore();
+      },
+      { root: null, threshold: 0, rootMargin: '600px' },
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [loadMore, loading]);
 
   const handleFilterChange = (field: keyof SearchRequest, value: unknown) => {
     setFilters((prev) => ({ ...prev, [field]: value || undefined, page: 0 }));
@@ -182,7 +183,7 @@ export default function LibraryPage() {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
       {/* ==================== TOP BAR (Sort + Filters toggle) ==================== */}
       <Box
         sx={{
@@ -366,7 +367,7 @@ export default function LibraryPage() {
       )}
 
       {/* ==================== CONTENT ==================== */}
-      <Box ref={scrollContainerRef} sx={{ flex: 1, minHeight: 0, overflow: 'auto', position: 'relative' }}>
+      <Box sx={{ flex: 1, overflow: 'auto', position: 'relative' }}>
         {error && (
           <Alert severity="warning" sx={{ mx: 1.5, mb: 1, bgcolor: 'rgba(255, 152, 0, 0.1)', color: '#ffb74d' }}>
             {error}
@@ -413,6 +414,7 @@ export default function LibraryPage() {
             ))}
         </Box>
 
+        {!loading && hasMore && <Box ref={sentinelRef} sx={{ height: 20 }} />}
       </Box>
 
       {/* ==================== DETAIL OVERLAY ==================== */}

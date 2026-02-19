@@ -206,7 +206,7 @@ export default function Layout() {
       </Box>
 
       {/* ==================== PAGE CONTENT ==================== */}
-      <Box component="main" sx={{ flex: 1, bgcolor: '#191C24', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+      <Box component="main" sx={{ flex: 1, bgcolor: '#191C24', overflow: 'auto' }}>
         <Outlet />
       </Box>
 
