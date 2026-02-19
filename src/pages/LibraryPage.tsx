@@ -182,7 +182,7 @@ export default function LibraryPage() {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
       {/* ==================== TOP BAR (Sort + Filters toggle) ==================== */}
       <Box
         sx={{
@@ -366,7 +366,7 @@ export default function LibraryPage() {
       )}
 
       {/* ==================== CONTENT ==================== */}
-      <Box ref={scrollContainerRef} sx={{ flex: 1, overflow: 'auto', position: 'relative' }}>
+      <Box ref={scrollContainerRef} sx={{ flex: 1, minHeight: 0, overflow: 'auto', position: 'relative' }}>
         {error && (
           <Alert severity="warning" sx={{ mx: 1.5, mb: 1, bgcolor: 'rgba(255, 152, 0, 0.1)', color: '#ffb74d' }}>
             {error}

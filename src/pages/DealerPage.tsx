@@ -747,6 +747,7 @@ export default function DealerPage() {
   );
 
   return (
+    <Box sx={{ flex: 1, minHeight: 0, overflow: 'auto' }}>
     <Box sx={{ maxWidth: 1100, mx: 'auto', px: { xs: 2, md: 4 }, py: 3 }}>
       {/* Header */}
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
@@ -846,6 +847,7 @@ export default function DealerPage() {
           {snackbar.message}
         </Alert>
       </Snackbar>
+    </Box>
     </Box>
   );
 }
