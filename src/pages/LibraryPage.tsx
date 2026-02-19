@@ -59,8 +59,8 @@ export default function LibraryPage() {
   const [error, setError] = useState('');
   const [filterOptions, setFilterOptions] = useState<FilterOptions | null>(null);
 
-  const [sortMode, setSortMode] = useState<'recent' | 'popular'>('popular');
-  const [filters, setFilters] = useState<SearchRequest>({ page: 0, size: 100, sortBy: 'downloadCount', sortDir: 'desc' });
+  const [sortMode, setSortMode] = useState<'recent' | 'popular'>('recent');
+  const [filters, setFilters] = useState<SearchRequest>({ page: 0, size: 100, sortBy: 'createdAt', sortDir: 'desc' });
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [filtersVisible, setFiltersVisible] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' as 'success' | 'error' });
