@@ -27,82 +27,97 @@ export default function Layout() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100vh', bgcolor: '#151a2a' }}>
-      {/* ==================== HEADER ==================== */}
+      {/* ==================== HEADER (Figma node 3:4) ==================== */}
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          px: 2,
-          py: 1.5,
+          px: '16px',
+          py: '12px',
           bgcolor: 'rgba(255,255,255,0.04)',
           borderBottom: '1px solid rgba(255,255,255,0.06)',
           flexShrink: 0,
         }}
       >
         {/* Left side */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          {/* Logo */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          {/* Logo + title */}
           <Box
             onClick={() => navigate('/')}
-            sx={{ display: 'flex', alignItems: 'center', gap: 1, cursor: 'pointer' }}
+            sx={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
           >
+            {/* Gradient circle logo */}
             <Box
               sx={{
                 width: 28,
                 height: 28,
-                borderRadius: '6px',
-                background: 'linear-gradient(135deg, #00CB9A 0%, #1269D9 100%)',
+                borderRadius: '48px',
+                background: 'linear-gradient(135deg, #191c24 0%, #1f2e3f 12.5%, #24405b 25%, #2a5276 37.5%, #306492 50%, #3b88c8 75%, #46acff 100%)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
+            />
+            <Typography
+              sx={{
+                fontFamily: '"Inter", sans-serif',
+                fontWeight: 500,
+                fontSize: '16px',
+                lineHeight: '24px',
+                color: '#f5f5f5',
+                whiteSpace: 'nowrap',
+              }}
             >
-              <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>C</Typography>
-            </Box>
-            <Typography sx={{ fontWeight: 600, fontSize: '1rem', color: '#F5F5F5', whiteSpace: 'nowrap' }}>
               Component library
             </Typography>
           </Box>
 
-          {/* CNC / Robot tabs */}
+          {/* CNC / Robot pill tabs */}
           <Box
             sx={{
               display: 'flex',
-              bgcolor: 'rgba(255,255,255,0.06)',
-              borderRadius: '8px',
-              border: '1px solid rgba(255,255,255,0.08)',
-              overflow: 'hidden',
+              alignItems: 'center',
+              bgcolor: 'rgba(255,255,255,0.08)',
+              borderRadius: '64px',
+              p: '2px',
             }}
           >
             {[
               { label: 'CNC', value: ContentCategory.CNC_MACHINES },
               { label: 'Robot', value: ContentCategory.ROBOTS },
-            ].map((tab) => (
-              <Box
-                key={tab.value}
-                onClick={() => setActiveCategory(
-                  activeCategory === tab.value ? 'ALL' : tab.value
-                )}
-                sx={{
-                  px: 2,
-                  py: 0.5,
-                  fontSize: '0.875rem',
-                  fontWeight: 500,
-                  cursor: 'pointer',
-                  color: activeCategory === tab.value ? '#fff' : 'rgba(255,255,255,0.6)',
-                  bgcolor: activeCategory === tab.value ? '#1269D9' : 'transparent',
-                  borderRadius: activeCategory === tab.value ? '6px' : 0,
-                  transition: 'all 0.15s',
-                  userSelect: 'none',
-                  '&:hover': {
-                    color: '#fff',
-                  },
-                }}
-              >
-                {tab.label}
-              </Box>
-            ))}
+            ].map((tab) => {
+              const isActive = activeCategory === tab.value;
+              return (
+                <Box
+                  key={tab.value}
+                  onClick={() => setActiveCategory(isActive ? 'ALL' : tab.value)}
+                  sx={{
+                    px: isActive ? '17px' : '16px',
+                    py: isActive ? '3px' : '2px',
+                    borderRadius: '16px',
+                    cursor: 'pointer',
+                    userSelect: 'none',
+                    transition: 'all 0.15s',
+                    bgcolor: isActive ? '#46acff' : 'transparent',
+                    border: isActive ? '1px solid rgba(25,28,36,0.08)' : '1px solid transparent',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: '"Inter", sans-serif',
+                      fontWeight: 400,
+                      fontSize: '14px',
+                      lineHeight: '24px',
+                      color: isActive ? '#191c24' : 'rgba(255,255,255,0.6)',
+                      whiteSpace: 'nowrap',
+                    }}
+                  >
+                    {tab.label}
+                  </Typography>
+                </Box>
+              );
+            })}
           </Box>
 
           {/* Search bar */}
@@ -113,20 +128,22 @@ export default function Layout() {
               width: 360,
               height: 30,
               bgcolor: 'rgba(255,255,255,0.06)',
-              borderRadius: '6px',
+              borderRadius: '4px',
               border: '1px solid rgba(255,255,255,0.08)',
+              position: 'relative',
             }}
           >
-            <SearchIcon sx={{ fontSize: 16, color: 'rgba(255,255,255,0.35)', ml: 1 }} />
+            <SearchIcon sx={{ fontSize: 16, color: 'rgba(245,245,245,0.4)', ml: '8px' }} />
             <InputBase
               placeholder="Search"
               sx={{
                 flex: 1,
-                px: 1,
-                color: '#F5F5F5',
-                fontSize: '0.85rem',
+                ml: '8px',
+                color: '#f5f5f5',
+                fontFamily: '"Inter", sans-serif',
+                fontSize: '12.8px',
                 '& .MuiInputBase-input::placeholder': {
-                  color: 'rgba(255,255,255,0.4)',
+                  color: 'rgba(245,245,245,0.4)',
                   opacity: 1,
                 },
               }}
@@ -135,82 +152,143 @@ export default function Layout() {
         </Box>
 
         {/* Right side */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
           {isAuthenticated ? (
             <>
               {(isDealer || isVendor || isAdmin) && (
-                <Button
-                  size="small"
+                <Box
                   onClick={() => navigate('/dealer')}
                   sx={{
-                    color: location.pathname === '/dealer' ? '#00CB9A' : 'rgba(255,255,255,0.55)',
-                    fontSize: '0.8rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 37,
+                    px: '16px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
                     '&:hover': { bgcolor: 'rgba(255,255,255,0.06)' },
                   }}
                 >
-                  Dealer
-                </Button>
+                  <Typography sx={{ fontWeight: 500, fontSize: '12px', lineHeight: '21px', color: '#fff', whiteSpace: 'nowrap' }}>
+                    Dealer
+                  </Typography>
+                </Box>
               )}
               {isAdmin && (
-                <Button
-                  size="small"
+                <Box
                   onClick={() => navigate('/admin')}
                   sx={{
-                    color: location.pathname === '/admin' ? '#00CB9A' : 'rgba(255,255,255,0.55)',
-                    fontSize: '0.8rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 37,
+                    px: '16px',
+                    borderRadius: '8px',
+                    cursor: 'pointer',
                     '&:hover': { bgcolor: 'rgba(255,255,255,0.06)' },
                   }}
                 >
-                  Admin
-                </Button>
+                  <Typography sx={{ fontWeight: 500, fontSize: '12px', lineHeight: '21px', color: '#fff', whiteSpace: 'nowrap' }}>
+                    Admin
+                  </Typography>
+                </Box>
               )}
-              <Typography sx={{ fontSize: '0.8rem', color: '#F5F5F5', fontWeight: 500 }}>
-                {user?.username}
-              </Typography>
-              <Button
-                size="small"
-                variant="outlined"
-                onClick={handleLogout}
+              <Box
+                onClick={() => navigate('/')}
                 sx={{
-                  borderColor: 'rgba(255,255,255,0.15)',
-                  color: 'rgba(255,255,255,0.7)',
-                  fontSize: '0.8rem',
-                  '&:hover': { borderColor: 'rgba(255,255,255,0.3)' },
-                }}
-              >
-                Logout
-              </Button>
-            </>
-          ) : (
-            <>
-              <Button
-                size="small"
-                onClick={() => navigate('/login')}
-                sx={{
-                  color: 'rgba(255,255,255,0.7)',
-                  fontSize: '0.875rem',
-                  fontWeight: 500,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 37,
+                  px: '16px',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
                   '&:hover': { bgcolor: 'rgba(255,255,255,0.06)' },
                 }}
               >
-                Sign In
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                onClick={() => navigate('/login')}
+                <Typography sx={{ fontWeight: 500, fontSize: '12px', lineHeight: '21px', color: '#fff', whiteSpace: 'nowrap' }}>
+                  {user?.username}
+                </Typography>
+              </Box>
+              <Box
+                onClick={handleLogout}
                 sx={{
-                  bgcolor: '#00CB9A',
-                  color: '#fff',
-                  fontSize: '0.875rem',
-                  fontWeight: 500,
-                  borderRadius: '8px',
-                  px: 2,
-                  '&:hover': { bgcolor: '#00b588' },
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 37,
+                  px: '16px',
+                  borderRadius: '48px',
+                  bgcolor: '#46acff',
+                  cursor: 'pointer',
+                  '&:hover': { bgcolor: '#3d9be6' },
                 }}
               >
-                Log in
-              </Button>
+                <Typography sx={{ fontWeight: 500, fontSize: '12px', lineHeight: '21px', color: '#191c24', whiteSpace: 'nowrap' }}>
+                  Logout
+                </Typography>
+              </Box>
+            </>
+          ) : (
+            <>
+              {/* Sign In — text button */}
+              <Box
+                onClick={() => navigate('/login')}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 37,
+                  px: '16px',
+                  py: '8px',
+                  borderRadius: '8px',
+                  cursor: 'pointer',
+                  '&:hover': { bgcolor: 'rgba(255,255,255,0.06)' },
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: '"Inter", sans-serif',
+                    fontWeight: 500,
+                    fontSize: '12px',
+                    lineHeight: '21px',
+                    color: '#fff',
+                    whiteSpace: 'nowrap',
+                    textAlign: 'center',
+                  }}
+                >
+                  Sign In
+                </Typography>
+              </Box>
+              {/* Log in — filled pill */}
+              <Box
+                onClick={() => navigate('/login')}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  height: 37,
+                  width: 71.48,
+                  borderRadius: '48px',
+                  bgcolor: '#46acff',
+                  cursor: 'pointer',
+                  '&:hover': { bgcolor: '#3d9be6' },
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: '"Inter", sans-serif',
+                    fontWeight: 500,
+                    fontSize: '12px',
+                    lineHeight: '21px',
+                    color: '#191c24',
+                    whiteSpace: 'nowrap',
+                    textAlign: 'center',
+                  }}
+                >
+                  Log in
+                </Typography>
+              </Box>
             </>
           )}
         </Box>

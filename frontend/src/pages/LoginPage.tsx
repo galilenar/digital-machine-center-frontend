@@ -2,21 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
-  Paper,
   Typography,
-  TextField,
-  Button,
-  Alert,
-  InputAdornment,
+  InputBase,
   IconButton,
-  Divider,
+  Alert,
 } from '@mui/material';
 import {
   Visibility,
   VisibilityOff,
   Person as PersonIcon,
   Lock as LockIcon,
-  Settings as GearIcon,
 } from '@mui/icons-material';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -30,7 +25,6 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // If already logged in, redirect
   React.useEffect(() => {
     if (isAuthenticated) navigate('/');
   }, [isAuthenticated, navigate]);
@@ -60,124 +54,212 @@ export default function LoginPage() {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: '#191C24',
+        bgcolor: '#151a2a',
         p: 2,
       }}
     >
-      <Paper
+      <Box
         sx={{
-          maxWidth: 440,
+          maxWidth: 400,
           width: '100%',
-          p: { xs: 4, sm: 5 },
-          borderRadius: 3,
-          boxShadow: '0 8px 40px rgba(0,0,0,0.15)',
+          bgcolor: 'rgba(255,255,255,0.08)',
+          border: '1px solid rgba(255,255,255,0.06)',
+          borderRadius: '12px',
+          p: '32px',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '24px',
         }}
       >
-        {/* Logo */}
-        <Box sx={{ textAlign: 'center', mb: 4 }}>
+        {/* Logo + Title */}
+        <Box sx={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px' }}>
           <Box
             sx={{
-              width: 56,
-              height: 56,
-              borderRadius: '14px',
-              background: 'linear-gradient(135deg, #00CB9A 0%, #1269D9 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              mx: 'auto',
-              mb: 2,
+              width: 48,
+              height: 48,
+              borderRadius: '48px',
+              background: 'linear-gradient(135deg, #191c24 0%, #1f2e3f 12.5%, #24405b 25%, #2a5276 37.5%, #306492 50%, #3b88c8 75%, #46acff 100%)',
             }}
-          >
-            <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: 24 }}>C</Typography>
+          />
+          <Box>
+            <Typography
+              sx={{
+                fontFamily: '"Inter", sans-serif',
+                fontWeight: 700,
+                fontSize: '20px',
+                lineHeight: '28px',
+                color: '#fff',
+              }}
+            >
+              Welcome Back
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: '"Inter", sans-serif',
+                fontWeight: 400,
+                fontSize: '12px',
+                lineHeight: '16px',
+                color: 'rgba(255,255,255,0.5)',
+                mt: '4px',
+              }}
+            >
+              Sign in to Component library
+            </Typography>
           </Box>
-          <Typography variant="h5" fontWeight={700}>
-            Welcome Back
-          </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-            Sign in to Clouds
-          </Typography>
         </Box>
 
-        {/* Error alert */}
+        {/* Error */}
         {error && (
-          <Alert severity="error" sx={{ mb: 3 }}>
+          <Alert
+            severity="error"
+            sx={{
+              bgcolor: 'rgba(255,80,80,0.1)',
+              color: '#ff6b6b',
+              border: '1px solid rgba(255,80,80,0.2)',
+              borderRadius: '8px',
+              '& .MuiAlert-icon': { color: '#ff6b6b' },
+            }}
+          >
             {error}
           </Alert>
         )}
 
         {/* Form */}
-        <Box component="form" onSubmit={handleSubmit} noValidate>
-          <TextField
-            fullWidth
-            label="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            autoFocus
-            autoComplete="username"
-            sx={{ mb: 2.5 }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <PersonIcon color="action" />
-                </InputAdornment>
-              ),
+        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* Username field */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              height: 40,
+              bgcolor: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '4px',
+              px: '12px',
+              gap: '8px',
+              '&:focus-within': { borderColor: '#46acff' },
             }}
-          />
-          <TextField
-            fullWidth
-            label="Password"
-            type={showPassword ? 'text' : 'password'}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            autoComplete="current-password"
-            sx={{ mb: 3 }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <LockIcon color="action" />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    size="small"
-                    onClick={() => setShowPassword(!showPassword)}
-                    edge="end"
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              ),
+          >
+            <PersonIcon sx={{ fontSize: 18, color: 'rgba(255,255,255,0.35)' }} />
+            <InputBase
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoFocus
+              autoComplete="username"
+              sx={{
+                flex: 1,
+                fontFamily: '"Inter", sans-serif',
+                fontSize: '14px',
+                color: '#fff',
+                '& .MuiInputBase-input::placeholder': {
+                  color: 'rgba(245,245,245,0.4)',
+                  opacity: 1,
+                },
+              }}
+            />
+          </Box>
+
+          {/* Password field */}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              height: 40,
+              bgcolor: 'rgba(255,255,255,0.06)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: '4px',
+              px: '12px',
+              gap: '8px',
+              '&:focus-within': { borderColor: '#46acff' },
             }}
-          />
-          <Button
+          >
+            <LockIcon sx={{ fontSize: 18, color: 'rgba(255,255,255,0.35)' }} />
+            <InputBase
+              placeholder="Password"
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+              sx={{
+                flex: 1,
+                fontFamily: '"Inter", sans-serif',
+                fontSize: '14px',
+                color: '#fff',
+                '& .MuiInputBase-input::placeholder': {
+                  color: 'rgba(245,245,245,0.4)',
+                  opacity: 1,
+                },
+              }}
+            />
+            <IconButton
+              size="small"
+              onClick={() => setShowPassword(!showPassword)}
+              sx={{ color: 'rgba(255,255,255,0.35)', p: '4px' }}
+            >
+              {showPassword ? <VisibilityOff sx={{ fontSize: 18 }} /> : <Visibility sx={{ fontSize: 18 }} />}
+            </IconButton>
+          </Box>
+
+          {/* Sign In button */}
+          <Box
+            component="button"
             type="submit"
-            variant="contained"
-            fullWidth
-            size="large"
             disabled={loading}
             sx={{
-              py: 1.5,
-              fontSize: '1rem',
-              background: 'linear-gradient(135deg, #00CB9A 0%, #1269D9 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: 40,
+              borderRadius: '48px',
+              bgcolor: '#46acff',
+              border: 'none',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              opacity: loading ? 0.6 : 1,
+              transition: 'all 0.15s',
+              '&:hover': { bgcolor: '#3d9be6' },
             }}
           >
-            {loading ? 'Signing in...' : 'Sign In'}
-          </Button>
+            <Typography
+              sx={{
+                fontFamily: '"Inter", sans-serif',
+                fontWeight: 500,
+                fontSize: '14px',
+                lineHeight: '21px',
+                color: '#191c24',
+              }}
+            >
+              {loading ? 'Signing in...' : 'Sign In'}
+            </Typography>
+          </Box>
         </Box>
 
-        <Divider sx={{ my: 3 }} />
+        {/* Divider */}
+        <Box sx={{ borderTop: '1px solid rgba(255,255,255,0.08)' }} />
 
-        <Box sx={{ textAlign: 'center' }}>
-          <Button
-            variant="text"
-            onClick={() => navigate('/')}
-            sx={{ color: 'text.secondary' }}
+        {/* Browse without sign in */}
+        <Box
+          onClick={() => navigate('/')}
+          sx={{
+            textAlign: 'center',
+            cursor: 'pointer',
+            '&:hover p': { color: 'rgba(255,255,255,0.7)' },
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily: '"Inter", sans-serif',
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '16px',
+              color: 'rgba(255,255,255,0.5)',
+              transition: 'color 0.15s',
+            }}
           >
             Browse Library without signing in
-          </Button>
+          </Typography>
         </Box>
-      </Paper>
+      </Box>
     </Box>
   );
 }

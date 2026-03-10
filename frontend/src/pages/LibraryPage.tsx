@@ -207,95 +207,105 @@ export default function LibraryPage() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      {/* ==================== TOP BAR ==================== */}
+      {/* ==================== TOP BAR (Figma node 3:25) ==================== */}
       <Box
         sx={{
           display: 'flex',
           alignItems: 'center',
-          px: 2,
-          py: 1.2,
+          justifyContent: 'space-between',
+          px: '16px',
+          py: '20px',
           flexShrink: 0,
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
         }}
       >
-        {/* Filters button */}
+        {/* Filters pill button */}
         <Box
           onClick={() => setFiltersVisible((v) => !v)}
           sx={{
             display: 'flex',
             alignItems: 'center',
-            gap: 0.5,
-            px: 2,
-            py: 0.7,
-            borderRadius: '8px',
-            border: '1px solid',
-            borderColor: filtersVisible ? '#00CB9A' : 'rgba(255,255,255,0.1)',
-            bgcolor: filtersVisible ? 'rgba(0,203,154,0.1)' : 'transparent',
+            justifyContent: 'center',
+            px: '19px',
+            py: '7px',
+            borderRadius: '16px',
+            bgcolor: '#262830',
+            border: '1px solid #3a3e46',
             cursor: 'pointer',
             userSelect: 'none',
-            transition: 'all 0.15s',
             flexShrink: 0,
-            '&:hover': { borderColor: filtersVisible ? '#00CB9A' : 'rgba(255,255,255,0.2)' },
+            transition: 'all 0.15s',
+            '&:hover': { borderColor: '#505460' },
           }}
         >
-          <FilterListIcon sx={{ fontSize: 16, color: filtersVisible ? '#00CB9A' : 'rgba(255,255,255,0.6)' }} />
-          <Typography sx={{ fontSize: '0.82rem', fontWeight: 500, color: filtersVisible ? '#00CB9A' : 'rgba(255,255,255,0.7)' }}>
+          <Typography
+            sx={{
+              fontFamily: '"Inter", sans-serif',
+              fontWeight: 400,
+              fontSize: '13.12px',
+              lineHeight: '18.86px',
+              color: '#c0c4d0',
+              whiteSpace: 'nowrap',
+            }}
+          >
             Filters{activeFilterCount > 0 ? ` (${activeFilterCount})` : ''}
           </Typography>
         </Box>
 
-        {/* Spacer */}
-        <Box sx={{ flex: 1 }} />
-
-        {/* Content type tabs */}
-        <Box
-          sx={{
-            display: 'flex',
-            bgcolor: 'rgba(255,255,255,0.04)',
-            borderRadius: '8px',
-            border: '1px solid rgba(255,255,255,0.08)',
-            overflow: 'hidden',
-          }}
-        >
-          {contentTypeTabs.map((tab) => (
-            <Box
-              key={tab.value}
-              onClick={() => setActiveContentType(tab.value)}
-              sx={{
-                px: 2,
-                py: 0.5,
-                fontSize: '0.875rem',
-                fontWeight: 500,
-                cursor: 'pointer',
-                color: activeContentType === tab.value ? '#fff' : 'rgba(255,255,255,0.6)',
-                bgcolor: activeContentType === tab.value ? '#1269D9' : 'transparent',
-                borderRadius: activeContentType === tab.value ? '6px' : 0,
-                transition: 'all 0.15s',
-                userSelect: 'none',
-                whiteSpace: 'nowrap',
-                '&:hover': { color: '#fff' },
-              }}
-            >
-              {tab.label}
-            </Box>
-          ))}
-        </Box>
-
-        {/* Spacer */}
-        <Box sx={{ flex: 1 }} />
-
-        {/* Sort dropdown */}
+        {/* Content type pill tabs */}
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
-            gap: 0.3,
-            px: 1.5,
-            py: 0.5,
-            borderRadius: '8px',
-            border: '1px solid rgba(255,255,255,0.1)',
-            cursor: 'pointer',
+            borderRadius: '64px',
+            p: '2px',
+          }}
+        >
+          {contentTypeTabs.map((tab) => {
+            const isActive = activeContentType === tab.value;
+            return (
+              <Box
+                key={tab.value}
+                onClick={() => setActiveContentType(tab.value)}
+                sx={{
+                  px: isActive ? '17px' : '16px',
+                  py: isActive ? '3px' : '2px',
+                  borderRadius: '16px',
+                  cursor: 'pointer',
+                  userSelect: 'none',
+                  transition: 'all 0.15s',
+                  bgcolor: isActive ? 'rgba(255,255,255,0.16)' : 'transparent',
+                  border: isActive ? '1px solid rgba(25,28,36,0.08)' : '1px solid transparent',
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: '"Inter", sans-serif',
+                    fontWeight: 400,
+                    fontSize: '14px',
+                    lineHeight: '24px',
+                    color: isActive ? '#fff' : 'rgba(255,255,255,0.6)',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  {tab.label}
+                </Typography>
+              </Box>
+            );
+          })}
+        </Box>
+
+        {/* Recent sort pill */}
+        <Box
+          sx={{
+            width: 103.875,
+            height: 34,
+            borderRadius: '16px',
+            bgcolor: '#262830',
+            border: '1px solid #3a3e46',
             flexShrink: 0,
+            position: 'relative',
+            cursor: 'pointer',
           }}
         >
           <Select
@@ -314,23 +324,43 @@ export default function LibraryPage() {
             disableUnderline
             IconComponent={ArrowDownIcon}
             sx={{
-              fontSize: '0.85rem',
-              color: 'rgba(255,255,255,0.7)',
-              '& .MuiSelect-select': { py: 0, pr: '24px !important', pl: 0 },
-              '& .MuiSelect-icon': { color: 'rgba(255,255,255,0.4)', fontSize: 18 },
+              position: 'absolute',
+              inset: 0,
+              fontFamily: '"Inter", sans-serif',
+              fontWeight: 400,
+              fontSize: '13.12px',
+              lineHeight: '18.86px',
+              color: '#c0c4d0',
+              '& .MuiSelect-select': {
+                py: 0,
+                pl: '18px',
+                pr: '32px !important',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+              },
+              '& .MuiSelect-icon': { color: '#c0c4d0', fontSize: 18, right: 8 },
             }}
             MenuProps={{
               PaperProps: {
                 sx: {
-                  bgcolor: '#1E2230',
-                  border: '1px solid rgba(255,255,255,0.1)',
-                  borderRadius: '8px',
+                  bgcolor: '#262830',
+                  border: '1px solid #3a3e46',
+                  borderRadius: '10px',
                   mt: 0.5,
+                  py: 0.5,
                   '& .MuiMenuItem-root': {
-                    fontSize: '0.85rem',
-                    color: 'rgba(255,255,255,0.7)',
-                    '&:hover': { bgcolor: 'rgba(255,255,255,0.06)' },
-                    '&.Mui-selected': { bgcolor: 'rgba(18,105,217,0.2)', color: '#fff' },
+                    fontFamily: '"Inter", sans-serif',
+                    fontSize: '13.12px',
+                    color: '#c0c4d0',
+                    py: 1,
+                    px: 2,
+                    '&:hover': { bgcolor: '#2a2e38' },
+                    '&.Mui-selected': {
+                      bgcolor: 'transparent',
+                      color: '#fff',
+                      '&:hover': { bgcolor: '#2a2e38' },
+                    },
                   },
                 },
               },
@@ -473,8 +503,8 @@ export default function LibraryPage() {
             sx={{
               width: 300,
               flexShrink: 0,
-              borderLeft: '1px solid rgba(255,255,255,0.08)',
-              bgcolor: '#1a1e2c',
+              borderLeft: '1px solid rgba(255,255,255,0.06)',
+              bgcolor: 'rgba(255,255,255,0.08)',
               overflow: 'auto',
               '&::-webkit-scrollbar': { width: 4 },
               '&::-webkit-scrollbar-thumb': { bgcolor: 'rgba(255,255,255,0.1)', borderRadius: 2 },
@@ -579,7 +609,11 @@ function FilterChip({
   );
 }
 
-/* ─── Project Card ─── */
+/* ─── Project Card (pixel-perfect Figma match) ─── */
+/*
+ * Normal state  (node 18:524): border rgba(255,255,255,0.08), font-medium 500, no gradient, owner text transparent
+ * Selected state (node 18:660): border #1269D9, font-bold 700 + tracking, blue gradient, owner text visible
+ */
 
 function ProjectCard({ product, selected, onClick }: { product: Product; selected?: boolean; onClick: () => void }) {
   return (
@@ -591,21 +625,22 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
         borderRadius: '12px',
         bgcolor: 'rgba(255,255,255,0.04)',
         border: '1px solid',
-        borderColor: selected ? '#00BCD4' : 'rgba(255,255,255,0.08)',
-        boxShadow: selected ? '0 0 12px rgba(0,188,212,0.2)' : 'none',
+        borderColor: selected ? '#1269D9' : 'rgba(255,255,255,0.08)',
         overflow: 'hidden',
         cursor: 'pointer',
-        transition: 'border-color 0.2s, box-shadow 0.2s',
+        display: 'flex',
+        flexDirection: 'column',
+        transition: 'border-color 0.2s',
         '&:hover': {
-          borderColor: selected ? '#00BCD4' : 'rgba(255,255,255,0.15)',
+          borderColor: selected ? '#1269D9' : 'rgba(255,255,255,0.15)',
         },
       }}
     >
-      {/* Image area */}
+      {/* Preview image */}
       <Box
         sx={{
-          height: 150,
-          bgcolor: '#2a2d3a',
+          flex: '1 0 0',
+          minHeight: 150,
           position: 'relative',
           overflow: 'hidden',
         }}
@@ -617,70 +652,124 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
           onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
             e.currentTarget.src = placeholderImage;
           }}
-          sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          sx={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover',
+          }}
         />
-        {/* Owner badge */}
-        {product.productOwner && (
+        {/* Blue gradient — only when selected */}
+        {selected && (
           <Box
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to bottom, rgba(18,105,217,0) 44%, rgba(18,105,217,0.8) 100%)',
+              pointerEvents: 'none',
+            }}
+          />
+        )}
+        {/* Owner badge — visible only when selected */}
+        {product.productOwner && (
+          <Typography
             sx={{
               position: 'absolute',
               bottom: 8,
               left: 8,
-              bgcolor: 'rgba(18,105,217,0.85)',
-              color: '#fff',
-              fontSize: '0.65rem',
-              fontWeight: 500,
-              px: 1,
-              py: 0.3,
-              borderRadius: '4px',
-            }}
-          >
-            {product.productOwner}
-          </Box>
-        )}
-      </Box>
-
-      {/* Info */}
-      <Box sx={{ py: 1 }}>
-        {/* Title + subtitle */}
-        <Box sx={{ px: 1.5 }}>
-          <Typography
-            sx={{
-              fontSize: '0.95rem',
-              fontWeight: 600,
-              color: '#fff',
+              fontSize: '12px',
+              lineHeight: '16px',
+              color: selected ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0)',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
-              lineHeight: 1.4,
+              transition: 'color 0.2s',
             }}
           >
-            {product.name}
+            {product.productOwner}
           </Typography>
-          <Box sx={{ display: 'flex', gap: 1, mt: 0.2 }}>
-            <Typography sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>
+        )}
+      </Box>
+
+      {/* Info section */}
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px', py: '8px', flexShrink: 0 }}>
+        {/* Title + subtitle */}
+        <Box sx={{ pl: '12px', pr: '8px' }}>
+          {/* Title row */}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: 24 }}>
+            <Typography
+              sx={{
+                fontFamily: '"Inter", sans-serif',
+                fontWeight: selected ? 700 : 500,
+                fontSize: '16px',
+                lineHeight: selected ? '22px' : '20px',
+                letterSpacing: selected ? '0.375px' : 0,
+                color: '#fff',
+                flex: 1,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
+              {product.name}
+            </Typography>
+          </Box>
+          {/* Subtitle: machineType + axes */}
+          <Box sx={{ display: 'flex', gap: '8px', mt: '2px' }}>
+            <Typography
+              sx={{
+                fontFamily: '"Inter", sans-serif',
+                fontWeight: 400,
+                fontSize: '12px',
+                lineHeight: '16px',
+                color: 'rgba(255,255,255,0.6)',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                whiteSpace: 'nowrap',
+              }}
+            >
               {product.machineType
                 ? machineTypeLabels[product.machineType] || formatEnum(product.machineType)
                 : '—'}
             </Typography>
             {product.numberOfAxes > 0 && (
-              <Typography sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>
+              <Typography
+                sx={{
+                  fontFamily: '"Inter", sans-serif',
+                  fontWeight: 400,
+                  fontSize: '12px',
+                  lineHeight: '16px',
+                  color: 'rgba(255,255,255,0.6)',
+                }}
+              >
                 {product.numberOfAxes}X
               </Typography>
             )}
           </Box>
         </Box>
 
-        {/* Divider */}
-        <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)', my: 0.8 }} />
+        {/* Divider line */}
+        <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)' }} />
 
-        {/* Footer: content type + downloads */}
-        <Box sx={{ display: 'flex', alignItems: 'center', px: 1.5 }}>
+        {/* Footer: content type label + download icon + count */}
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+            height: 24,
+            px: '12px',
+          }}
+        >
           <Typography
             sx={{
-              fontSize: '0.75rem',
-              color: 'rgba(255,255,255,0.7)',
               flex: 1,
+              fontFamily: '"Inter", sans-serif',
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '16px',
+              color: 'rgba(255,255,255,0.8)',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
               whiteSpace: 'nowrap',
@@ -688,9 +777,18 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
           >
             {contentTypeLabels[product.contentType] || formatEnum(product.contentType)}
           </Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            <DownloadIcon sx={{ fontSize: 14, color: 'rgba(255,255,255,0.4)' }} />
-            <Typography sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.5)' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0 }}>
+            <DownloadIcon sx={{ fontSize: 16, color: 'rgba(255,255,255,0.6)' }} />
+            <Typography
+              sx={{
+                fontFamily: '"Inter", sans-serif',
+                fontWeight: 400,
+                fontSize: '12px',
+                lineHeight: '16px',
+                color: 'rgba(255,255,255,0.6)',
+                textAlign: 'right',
+              }}
+            >
               {product.downloadCount ?? 0}
             </Typography>
           </Box>
@@ -700,7 +798,7 @@ function ProjectCard({ product, selected, onClick }: { product: Product; selecte
   );
 }
 
-/* ─── Detail Side Panel ─── */
+/* ─── Detail Side Panel (pixel-perfect Figma node 45:400) ─── */
 
 function DetailPanel({
   product,
@@ -714,67 +812,75 @@ function DetailPanel({
   onTrial: () => void;
 }) {
   return (
-    <Box sx={{ p: 2 }}>
-      {/* Name */}
-      <Typography sx={{ fontSize: '1.1rem', fontWeight: 700, color: '#F5F5F5', mb: 1 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '16px', p: '16px' }}>
+      {/* Title */}
+      <Typography
+        sx={{
+          fontWeight: 700,
+          fontSize: '16px',
+          lineHeight: '22px',
+          letterSpacing: '0.375px',
+          color: '#fff',
+        }}
+      >
         {product.name}
       </Typography>
 
       {/* Badges */}
-      <Box sx={{ display: 'flex', gap: 0.8, mb: 1.5, flexWrap: 'wrap' }}>
-        <Chip
-          label={contentTypeLabels[product.contentType] || formatEnum(product.contentType)}
-          size="small"
+      <Box sx={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+        <Box
           sx={{
-            bgcolor: contentTypeColors[product.contentType] || '#1269D9',
-            color: '#fff',
-            fontWeight: 600,
-            fontSize: '0.7rem',
-            height: 24,
+            bgcolor: '#1269D9',
             borderRadius: '6px',
+            px: '8px',
+            py: '4px',
           }}
-        />
-        <Chip
-          label={formatEnum(product.category)}
-          size="small"
+        >
+          <Typography sx={{ fontSize: '12px', lineHeight: '16px', color: '#fff', fontWeight: 400 }}>
+            {contentTypeLabels[product.contentType] || formatEnum(product.contentType)}
+          </Typography>
+        </Box>
+        <Box
           sx={{
-            bgcolor: 'rgba(0,203,154,0.15)',
-            color: '#00CB9A',
-            fontWeight: 500,
-            fontSize: '0.7rem',
-            height: 24,
+            border: '1px solid #fff',
             borderRadius: '6px',
-            border: '1px solid rgba(0,203,154,0.3)',
+            px: '8px',
+            py: '4px',
           }}
-        />
+        >
+          <Typography sx={{ fontSize: '11px', lineHeight: '16.5px', color: '#fff', fontWeight: 400 }}>
+            {formatEnum(product.category)}
+          </Typography>
+        </Box>
       </Box>
 
       {/* Description */}
-      {product.description && (
-        <Typography sx={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.6, mb: 1.5 }}>
-          {product.description}
-        </Typography>
-      )}
+      <Typography sx={{ fontSize: '12px', lineHeight: '16px', color: '#fff', fontWeight: 400 }}>
+        {product.description || '—'}
+      </Typography>
 
-      <SectionDivider />
+      {/* Divider */}
+      <Divider sx={{ borderColor: 'rgba(255,255,255,0.08)' }} />
 
       {/* PRICING & LICENSE */}
-      <SectionTitle>PRICING & LICENSE</SectionTitle>
-      <FieldRow>
-        <Box sx={{ flex: 1 }}>
-          <FieldLabel>Price</FieldLabel>
-          <Typography sx={{ fontSize: '1.3rem', fontWeight: 700, color: '#00CB9A', mb: 0.5 }}>
-            {product.priceEur === 0 ? 'Free' : `${product.priceEur?.toFixed(2)} €`}
-          </Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Typography sx={sxSectionTitle}>Pricing & License</Typography>
+        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <Box>
+            <Typography sx={sxFieldLabel}>Price</Typography>
+            <Typography sx={{ fontWeight: 700, fontSize: '20px', lineHeight: '28px', color: '#46acff' }}>
+              {product.priceEur === 0 ? 'Free' : `${product.priceEur?.toFixed(2)} \u20AC`}
+            </Typography>
+          </Box>
+          <Box>
+            <Typography sx={sxFieldLabel}>Trial Period</Typography>
+            <Typography sx={sxFieldValue}>{product.trialDays > 0 ? `${product.trialDays} days` : '\u2014'}</Typography>
+          </Box>
         </Box>
-        <Box sx={{ flex: 1 }}>
-          <FieldLabel>Trial Period</FieldLabel>
-          <FieldValue>{product.trialDays > 0 ? `${product.trialDays} days` : '—'}</FieldValue>
-        </Box>
-      </FieldRow>
+      </Box>
 
       {/* Action buttons */}
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mb: 1.5 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {product.trialDays > 0 && (
           <Button
             fullWidth
@@ -783,14 +889,17 @@ function DetailPanel({
             startIcon={<TrialIcon sx={{ fontSize: '14px !important' }} />}
             onClick={onTrial}
             sx={{
-              borderColor: 'rgba(255,255,255,0.15)',
-              color: 'rgba(255,255,255,0.8)',
-              fontSize: '0.8rem',
+              border: '0.667px solid #fff',
+              borderRadius: '4px',
+              color: '#fff',
+              fontSize: '12px',
               fontWeight: 500,
-              py: 0.8,
-              borderRadius: '8px',
-              '&:hover': { borderColor: 'rgba(255,255,255,0.3)', bgcolor: 'rgba(255,255,255,0.04)' },
-              '&.Mui-disabled': { borderColor: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.25)' },
+              lineHeight: '16px',
+              px: '20px',
+              py: '10px',
+              textTransform: 'none',
+              '&:hover': { bgcolor: 'rgba(255,255,255,0.06)', borderColor: '#fff' },
+              '&.Mui-disabled': { borderColor: 'rgba(255,255,255,0.2)', color: 'rgba(255,255,255,0.3)' },
             }}
           >
             Get Trial License
@@ -803,126 +912,110 @@ function DetailPanel({
           onClick={onDownload}
           sx={{
             bgcolor: '#1269D9',
-            fontSize: '0.8rem',
+            borderRadius: '4px',
+            color: '#fff',
+            fontSize: '12px',
             fontWeight: 500,
-            py: 0.8,
-            borderRadius: '8px',
-            '&:hover': { bgcolor: '#0d4a97' },
+            lineHeight: '16px',
+            px: '20px',
+            py: '10px',
+            textTransform: 'none',
+            boxShadow: 'none',
+            '&:hover': { bgcolor: '#0d4a97', boxShadow: 'none' },
           }}
         >
           Record Download
         </Button>
       </Box>
 
-      <SectionDivider />
+      {/* Divider */}
+      <Divider sx={{ borderColor: 'rgba(255,255,255,0.08)' }} />
 
       {/* MACHINE INFORMATION */}
-      <SectionTitle>MACHINE INFORMATION</SectionTitle>
-      <FieldRow>
-        <FieldBlock label="Manufacturer" value={product.machineManufacturer} />
-        <FieldBlock label="Machine Type" value={product.machineType ? machineTypeLabels[product.machineType] : undefined} />
-      </FieldRow>
-      <FieldRow>
-        <FieldBlock label="Series" value={product.machineSeries} />
-        <FieldBlock label="Model" value={product.machineModel} />
-      </FieldRow>
-      <FieldRow>
-        <FieldBlock label="Number of Axes" value={product.numberOfAxes > 0 ? String(product.numberOfAxes) : undefined} />
-      </FieldRow>
-
-      <SectionDivider />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Typography sx={sxSectionTitle}>Machine Information</Typography>
+        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <FieldCell label="Manufacturer" value={product.machineManufacturer} />
+          <FieldCell label="Machine Type" value={product.machineType ? machineTypeLabels[product.machineType] : undefined} />
+          <FieldCell label="Series" value={product.machineSeries} />
+          <FieldCell label="Model" value={product.machineModel} />
+          <FieldCell label="Number of Axes" value={product.numberOfAxes > 0 ? String(product.numberOfAxes) : undefined} />
+        </Box>
+      </Box>
 
       {/* CONTROLLER */}
-      <SectionTitle>CONTROLLER</SectionTitle>
-      <FieldRow>
-        <FieldBlock label="Manufacturer" value={product.controllerManufacturer} />
-        <FieldBlock label="Series" value={product.controllerSeries} />
-      </FieldRow>
-      <FieldRow>
-        <FieldBlock label="Model" value={product.controllerModel} />
-      </FieldRow>
-
-      <SectionDivider />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Typography sx={sxSectionTitle}>Controller</Typography>
+        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <FieldCell label="Manufacturer" value={product.controllerManufacturer} />
+          <FieldCell label="Series" value={product.controllerSeries} />
+          <FieldCell label="Model" value={product.controllerModel} />
+        </Box>
+      </Box>
 
       {/* SOFTWARE */}
-      <SectionTitle>SOFTWARE</SectionTitle>
-      <FieldBlock label="Min Software Version" value={product.minSoftwareVersion} />
-      {product.supportedCodes && (
-        <Box sx={{ mt: 0.5 }}>
-          <FieldLabel>Supported Codes</FieldLabel>
-          <Typography sx={{ fontSize: '0.78rem', color: 'rgba(255,255,255,0.7)', wordBreak: 'break-word', lineHeight: 1.5 }}>
-            {product.supportedCodes}
-          </Typography>
-        </Box>
-      )}
-
-      <SectionDivider />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Typography sx={sxSectionTitle}>Software</Typography>
+        <FieldCell label="Min Software Version" value={product.minSoftwareVersion} />
+        {product.supportedCodes && (
+          <Box>
+            <Typography sx={sxFieldLabel}>Supported Codes</Typography>
+            <Typography sx={{ ...sxFieldValue, wordBreak: 'break-word', whiteSpace: 'normal' }}>
+              {product.supportedCodes}
+            </Typography>
+          </Box>
+        )}
+      </Box>
 
       {/* DETAILS */}
-      <SectionTitle>DETAILS</SectionTitle>
-      <FieldRow>
-        <FieldBlock label="Author" value={product.authorName} />
-        <FieldBlock label="Product Owner" value={product.productOwner} />
-      </FieldRow>
-      <FieldRow>
-        <FieldBlock label="Status" value={product.publicationStatus ? publicationStatusLabels[product.publicationStatus] : undefined} />
-        <FieldBlock label="Downloads" value={String(product.downloadCount ?? 0)} />
-      </FieldRow>
-      <FieldRow>
-        <FieldBlock label="Created" value={product.createdAt ? new Date(product.createdAt).toLocaleDateString() : undefined} />
-        <FieldBlock label="Updated" value={product.updatedAt ? new Date(product.updatedAt).toLocaleDateString() : undefined} />
-      </FieldRow>
-      <FieldRow>
-        <FieldBlock label="Published" value={product.publishedAt ? new Date(product.publishedAt).toLocaleDateString() : undefined} />
-        <FieldBlock label="Experience" value={product.experienceStatus === ExperienceStatus.VERIFIED_ON_EQUIPMENT ? 'Verified' : 'Not tested'} />
-      </FieldRow>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <Typography sx={sxSectionTitle}>Details</Typography>
+        <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <FieldCell label="Author" value={product.authorName} />
+          <FieldCell label="Product Owner" value={product.productOwner} />
+          <FieldCell label="Status" value={product.publicationStatus ? publicationStatusLabels[product.publicationStatus] : undefined} />
+          <FieldCell label="Downloads" value={String(product.downloadCount ?? 0)} />
+          <FieldCell label="Created" value={product.createdAt ? new Date(product.createdAt).toLocaleDateString() : undefined} />
+          <FieldCell label="Updated" value={product.updatedAt ? new Date(product.updatedAt).toLocaleDateString() : undefined} />
+          <FieldCell label="Published" value={product.publishedAt ? new Date(product.publishedAt).toLocaleDateString() : undefined} />
+          <FieldCell label="Experience" value={product.experienceStatus === ExperienceStatus.VERIFIED_ON_EQUIPMENT ? 'Verified' : 'Not tested'} />
+        </Box>
+      </Box>
     </Box>
   );
 }
 
-/* ─── Detail Panel helpers ─── */
+/* ─── Side panel design tokens (Figma 45:400) ─── */
 
-function SectionTitle({ children }: { children: React.ReactNode }) {
+const sxSectionTitle = {
+  fontWeight: 700,
+  fontSize: '10px',
+  lineHeight: '14px',
+  letterSpacing: '1px',
+  textTransform: 'uppercase' as const,
+  color: '#46acff',
+};
+
+const sxFieldLabel = {
+  fontWeight: 400,
+  fontSize: '10px',
+  lineHeight: '14px',
+  color: 'rgba(255,255,255,0.5)',
+};
+
+const sxFieldValue = {
+  fontWeight: 500,
+  fontSize: '12px',
+  lineHeight: '16px',
+  color: '#fff',
+  whiteSpace: 'nowrap' as const,
+};
+
+function FieldCell({ label, value }: { label: string; value?: string }) {
   return (
-    <Typography sx={{ fontSize: '0.7rem', fontWeight: 700, color: '#00CB9A', letterSpacing: 0.8, textTransform: 'uppercase', mt: 1.2, mb: 0.8 }}>
-      {children}
-    </Typography>
-  );
-}
-
-function SectionDivider() {
-  return <Divider sx={{ borderColor: 'rgba(255,255,255,0.06)', my: 1 }} />;
-}
-
-function FieldLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <Typography sx={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', mb: 0.2 }}>
-      {children}
-    </Typography>
-  );
-}
-
-function FieldValue({ children }: { children: React.ReactNode }) {
-  return (
-    <Typography sx={{ fontSize: '0.82rem', color: '#F5F5F5', mb: 0.5, wordBreak: 'break-word' }}>
-      {children || '—'}
-    </Typography>
-  );
-}
-
-function FieldBlock({ label, value }: { label: string; value?: string }) {
-  return (
-    <Box sx={{ flex: 1 }}>
-      <FieldLabel>{label}</FieldLabel>
-      <FieldValue>{value}</FieldValue>
-    </Box>
-  );
-}
-
-function FieldRow({ children }: { children: React.ReactNode }) {
-  return (
-    <Box sx={{ display: 'flex', gap: 1 }}>
-      {children}
+    <Box>
+      <Typography sx={sxFieldLabel}>{label}</Typography>
+      <Typography sx={sxFieldValue}>{value || '\u2014'}</Typography>
     </Box>
   );
 }
