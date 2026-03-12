@@ -1,0 +1,24 @@
+<svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" width="512" height="512">
+  <defs>
+    <linearGradient id="grad" gradientUnits="userSpaceOnUse" x2="5" y2="5">
+      <stop stop-color="rgba(25,28,36,1)" offset="0"/>
+      <stop stop-color="rgba(31,46,63,1)" offset="0.125"/>
+      <stop stop-color="rgba(36,64,91,1)" offset="0.25"/>
+      <stop stop-color="rgba(42,82,118,1)" offset="0.375"/>
+      <stop stop-color="rgba(48,100,146,1)" offset="0.5"/>
+      <stop stop-color="rgba(59,136,200,1)" offset="0.75"/>
+      <stop stop-color="rgba(70,172,255,1)" offset="1"/>
+    </linearGradient>
+    <clipPath id="circle">
+      <circle cx="14" cy="14" r="14"/>
+    </clipPath>
+  </defs>
+  <g clip-path="url(#circle)">
+    <g transform="matrix(1 -1 2 2 14 14)" opacity="1">
+      <rect height="133" width="140" fill="url(#grad)" id="quad" shape-rendering="crispEdges"/>
+      <use href="#quad" transform="scale(1 -1)"/>
+      <use href="#quad" transform="scale(-1 1)"/>
+      <use href="#quad" transform="scale(-1 -1)"/>
+    </g>
+  </g>
+</svg>

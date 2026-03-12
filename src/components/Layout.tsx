@@ -49,18 +49,11 @@ export default function Layout() {
           }}
         >
           <Box
-            sx={{
-              width: 28,
-              height: 28,
-              borderRadius: '6px',
-              background: 'linear-gradient(135deg, #00CB9A 0%, #1269D9 100%)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <Typography sx={{ color: '#fff', fontWeight: 700, fontSize: 14 }}>C</Typography>
-          </Box>
+            component="img"
+            src="/logo.svg"
+            alt="Logo"
+            sx={{ width: 28, height: 28 }}
+          />
           <Typography
             sx={{
               fontWeight: 600,
