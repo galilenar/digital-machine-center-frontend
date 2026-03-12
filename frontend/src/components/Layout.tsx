@@ -47,18 +47,7 @@ export default function Layout() {
             onClick={() => navigate('/')}
             sx={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
           >
-            {/* Gradient circle logo */}
-            <Box
-              sx={{
-                width: 28,
-                height: 28,
-                borderRadius: '48px',
-                background: 'linear-gradient(135deg, #191c24 0%, #1f2e3f 12.5%, #24405b 25%, #2a5276 37.5%, #306492 50%, #3b88c8 75%, #46acff 100%)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            />
+            <Box component="img" src="/logo.svg" alt="Logo" sx={{ width: 28, height: 28 }} />
             <Typography
               sx={{
                 fontFamily: '"Inter", sans-serif',
